@@ -1,4 +1,5 @@
 import 'package:abc/Login/log_in_view.dart';
+import 'package:abc/Main/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'Login/sign_up_view.dart';
@@ -15,7 +16,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: LogInView(),
+          child: HomeView(),
         ),
       ),
     );
