@@ -1,8 +1,9 @@
 import 'package:abc/Login/log_in_view.dart';
-import 'package:abc/Main/home_view.dart';
+
 import 'package:flutter/material.dart';
 
 import 'Login/sign_up_view.dart';
+import 'home/tabBar_view.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,12 +14,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: HomeView(),
-        ),
-      ),
+    return MaterialApp(
+      routes: {
+        "login": (context) => const LogInView(),
+        "signup": (context) => const SignUpView()
+      },
+      home: Scaffold(resizeToAvoidBottomInset: false, body: LogInView()),
     );
   }
 }

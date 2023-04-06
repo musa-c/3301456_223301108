@@ -2,62 +2,77 @@
 
 import 'package:flutter/material.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ProfileWiew extends StatefulWidget {
+  const ProfileWiew({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ProfileWiew> createState() => _ProfileWiewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ProfileWiewState extends State<ProfileWiew> {
   String dummyTweet =
       "A group of physicians has volunteered to vaccinate migrants against the flu for free, but US Customs and Border Protection is all but certain to say no to the offer. \"We haven't responded, but it's not likely to happen,\" a CBP official told CNN. ";
-  String _url = "https://picsum.photos/id/237/200/300";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black, appBar: _appBar, body: _ListView);
+    return Scaffold(backgroundColor: Colors.black, body: _ProfileContext);
   }
 
-  PreferredSizeWidget get _appBar => AppBar(
-        elevation: 0,
-        toolbarHeight: 59,
-        leading: _AppBarAvatar,
-        title: _AppBarTitle,
-        titleTextStyle: _AppBarIconTitleStyle,
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        bottom: _AppBarDivider,
-        actions: [_AppBarIcon],
+  Widget get _ProfileContext => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          _ProfileSettingIcon,
+          _ProfileAvatarUserName,
+          _ListViewExpanded
+        ],
       );
 
-  Widget get _AppBarAvatar =>
-      Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        CircleAvatar(radius: 17.5, backgroundImage: NetworkImage(_url)),
-      ]);
-
-  Widget get _AppBarTitle => Text("fısılsda");
-
-  TextStyle get _AppBarIconTitleStyle =>
-      TextStyle(fontWeight: FontWeight.w900, fontSize: 20, letterSpacing: 8);
-
-  PreferredSize get _AppBarDivider => PreferredSize(
-        preferredSize: Size.fromHeight(1.0),
-        child: Divider(
-          height: 1,
-          thickness: 1,
-          color: Color.fromARGB(255, 52, 52, 52),
+  Widget get _ProfileSettingIcon => Container(
+        margin: EdgeInsets.fromLTRB(0, 12, 12, 0),
+        child: Icon(
+          Icons.settings,
+          color: Colors.white,
         ),
       );
 
-  Widget get _AppBarIcon => IconButton(
-        icon: Icon(Icons.email_outlined, size: 24),
-        onPressed: () {}, // omitting onPressed makes the button disabled
+  Widget get _ProfileAvatarUserName => Expanded(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [_ProfileAvatarWrap],
+          ),
+        ),
       );
+
+  Widget get _ProfileAvatarWrap => Wrap(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [_ProfileAvatar, _ProfileUserNameSurname, _ProfileUserName],
+        ),
+      ]);
+
+  Widget get _ProfileAvatar => CircleAvatar(
+        backgroundColor: Colors.grey,
+        radius: 40,
+      );
+
+  Widget get _ProfileUserNameSurname => Text(
+        "kullanıcı adı",
+        style: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      );
+
+  Widget get _ProfileUserName => Text(
+        "@kullanıcı_adı",
+        style: TextStyle(color: Colors.white),
+      );
+
+  Widget get _ListViewExpanded => Expanded(
+      flex: 3, child: Container(width: double.infinity, child: _ListView));
 
   Widget get _ListView => ListView.builder(
       itemCount: 5,
+      padding: EdgeInsets.all(5),
       itemBuilder: (context, index) {
         return _ListCont;
       });
@@ -80,16 +95,8 @@ class _HomeViewState extends State<HomeView> {
 
   Widget get _ListTile => ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-      leading: _ListAvatar,
       subtitle: _ListContext,
       title: _ListTitle);
-
-  Widget _listCartUserName(String text) => Text(
-        text,
-        style: titleTextStyle,
-      );
-
-  Color get _footerColor => Color.fromRGBO(85, 90, 100, 1.0);
 
   Widget get _ListTitle => Container(
         child: Row(
@@ -111,15 +118,9 @@ class _HomeViewState extends State<HomeView> {
             TextStyle(fontSize: 14, color: Color.fromRGBO(203, 208, 217, 1.0)),
       );
 
-  Widget get _ListAvatar => Container(
-      height: double.infinity,
-      // ignore: sized_box_for_whitespace
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 14),
-      child: _ListAvatarChilt);
-
-  Widget get _ListAvatarChilt => CircleAvatar(
-        radius: 24,
-        backgroundImage: NetworkImage(_url),
+  Widget _listCartUserName(String text) => Text(
+        text,
+        style: titleTextStyle,
       );
 
   Widget get _ListContext => Column(
@@ -193,6 +194,8 @@ class _HomeViewState extends State<HomeView> {
           _ListIconText
         ]),
       );
+
+  Color get _footerColor => Color.fromRGBO(85, 90, 100, 1.0);
 
   Widget get _ListIconText =>
       Text("121", style: TextStyle(color: _footerColor));

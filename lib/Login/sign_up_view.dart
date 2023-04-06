@@ -31,6 +31,16 @@ class _SignUpViewState extends State<SignUpView> {
             _textForm_sifreTekrar,
             SizedBox(height: 24),
             _LoginButton,
+            SizedBox(height: 24),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'login');
+              },
+              child: Text(
+                'Zaten bir hesabın var mı? \n Giriş Yap',
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ));
   }

@@ -2,7 +2,11 @@
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:abc/Login/sign_up_view.dart';
+import 'package:abc/home/pages/main_page/home_view.dart';
 import 'package:flutter/material.dart';
+
+import '../home/tabBar_view.dart';
 
 class LogInView extends StatefulWidget {
   const LogInView({super.key});
@@ -12,31 +16,56 @@ class LogInView extends StatefulWidget {
 }
 
 class _LogInViewState extends State<LogInView> {
+  String? username = "";
+  String? pass = "";
+
+  void Control() {
+    if ((username!.length > 2) && (pass!.length == 2)) {
+      var data = [];
+      data.add(username);
+      data.add(pass);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TabBarViewAbc(),
+            settings: RouteSettings(
+              arguments: data,
+            ),
+          ));
+    } else {
+      Navigator.pushNamed(context, 'login');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _appTitle,
-            _textform_kullAdi,
-            SizedBox(height: 16),
-            _textForm_sifre,
-            SizedBox(height: 24),
-            _LoginButton,
-            SizedBox(height: 16),
-            _Info,
-            SizedBox(height: 36),
-            _orText,
-            SizedBox(height: 32),
-            _EmailButton,
-            SizedBox(height: 24),
-            _GoogleButton,
-            SizedBox(height: 24),
-            _SignUpButton
-          ],
-        ));
+    return MaterialApp(
+      routes: {"signup": (context) => SignUpView()},
+      home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.black,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _appTitle,
+              _textform_kullAdi,
+              SizedBox(height: 16),
+              _textForm_sifre,
+              SizedBox(height: 24),
+              _LoginButton,
+              SizedBox(height: 16),
+              _Info,
+              SizedBox(height: 36),
+              _orText,
+              SizedBox(height: 32),
+              _EmailButton,
+              SizedBox(height: 24),
+              _GoogleButton,
+              SizedBox(height: 24),
+              _SignUpButton
+            ],
+          )),
+    );
   }
 
   Widget get _appTitle => Container(
@@ -57,6 +86,11 @@ class _LogInViewState extends State<LogInView> {
           height: 44,
           width: 380,
           child: TextField(
+            onChanged: (text) {
+              setState(() {
+                username = text;
+              });
+            },
             textAlignVertical: TextAlignVertical.center,
             textAlign: TextAlign.start,
             maxLines: 1,
@@ -81,6 +115,11 @@ class _LogInViewState extends State<LogInView> {
           height: 44,
           width: 380,
           child: TextField(
+            onChanged: (text) {
+              setState(() {
+                pass = text;
+              });
+            },
             textAlignVertical: TextAlignVertical.center,
             textAlign: TextAlign.start,
             maxLines: 1,
@@ -113,7 +152,9 @@ class _LogInViewState extends State<LogInView> {
               backgroundColor: Colors.purple[300],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12))),
-          onPressed: () {},
+          onPressed: () {
+            Control();
+          },
           child: Text('Giriş Yap'),
         ),
       );
@@ -190,7 +231,9 @@ class _LogInViewState extends State<LogInView> {
         width: 380,
         height: 44,
         child: ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, 'signup');
+          },
           icon: Icon(Icons.person_add_alt_1_outlined),
           label: Text(
             "Yeni Hesap Oluştur",
