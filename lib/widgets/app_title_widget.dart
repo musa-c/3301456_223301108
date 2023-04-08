@@ -21,7 +21,7 @@ class AppTitleWidget extends StatelessWidget {
 
   TextStyle get _TextAppTitleWidgetStyle => TextStyle(
       color: Colors.white,
-      fontFamily: 'Poppins', // çalışmıyor !
+      fontFamily: 'Poppins', // çalışmıyor!
       fontSize: 20,
       fontWeight: FontWeight.w800,
       fontStyle: FontStyle.normal,
