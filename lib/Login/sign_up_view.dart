@@ -4,6 +4,9 @@
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:abc/widgets/app_title_widget.dart';
+import 'package:abc/widgets/button_widget.dart';
+import 'package:abc/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class SignUpView extends StatefulWidget {
@@ -17,163 +20,57 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             _appTitle,
-            _textform_name,
+            _textFormName,
             SizedBox(height: 16),
-            _textform_kullAdi,
+            _textFormKullAdi,
             SizedBox(height: 16),
-            _textForm_sifre,
+            _textFormSifre,
             SizedBox(height: 24),
-            _textForm_sifreTekrar,
+            _textFormSifreTekrar,
             SizedBox(height: 24),
-            _LoginButton,
+            _loginButton,
             SizedBox(height: 24),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'login');
-              },
-              child: Text(
-                'Zaten bir hesabın var mı? \n Giriş Yap',
-                textAlign: TextAlign.center,
-              ),
-            ),
+            _textButton,
           ],
         ));
   }
 
-  Widget get _appTitle => Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.fromLTRB(0, 80, 0, 48),
-        child: Text("ABC DEF",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Poppins', // çalışmıyor !
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                fontStyle: FontStyle.normal)),
-      );
+  Widget get _appTitle => AppTitleWidget(app_title: "fsociety");
+  Widget get _textFormName => TextFieldWidget(hintText: "İsim");
+  Widget get _textFormKullAdi => TextFieldWidget(hintText: "Kullanıcı Adı");
 
-  Widget get _textform_kullAdi => Center(
-        child: Container(
-          height: 44,
-          width: 380,
-          child: TextField(
-            textAlignVertical: TextAlignVertical.center,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              filled: true,
-              //focusedBorder: outlineInputBorder,
-              focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              hintText: "kullanıcı Adı",
-              hintStyle: TextStyle(color: Colors.grey),
-              fillColor: Color.fromRGBO(60, 60, 67, 0.6),
-            ),
-          ),
-        ),
-      );
+  Widget get _textFormSifre => TextFieldWidget(
+      hintText: "Şifre",
+      iconButton: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.remove_red_eye),
+        color: Colors.grey,
+      ));
 
-  Widget get _textform_name => Center(
-        child: Container(
-          height: 44,
-          width: 380,
-          child: TextField(
-            textAlignVertical: TextAlignVertical.center,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              filled: true,
-              //focusedBorder: outlineInputBorder,
-              focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              hintText: "isim",
-              hintStyle: TextStyle(color: Colors.grey),
-              fillColor: Color.fromRGBO(60, 60, 67, 0.6),
-            ),
-          ),
-        ),
-      );
+  Widget get _textFormSifreTekrar => TextFieldWidget(
+      hintText: "Tekrar Şifre",
+      iconButton: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.remove_red_eye),
+        color: Colors.grey,
+      ));
 
-  Widget get _textForm_sifre => Center(
-        child: SizedBox(
-          height: 44,
-          width: 380,
-          child: TextField(
-            textAlignVertical: TextAlignVertical.center,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.remove_red_eye),
-                color: Colors.grey,
-              ),
-              contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              filled: true,
-              //focusedBorder: outlineInputBorder,
-              focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              hintText: "Şifre",
-              hintStyle: TextStyle(color: Colors.grey),
-              fillColor: Color.fromRGBO(60, 60, 67, 0.6),
-            ),
-          ),
-        ),
-      );
+  Widget get _loginButton =>
+      ButtonWidget(onPressed: () {}, child: Text("Kaydol"));
 
-  Widget get _textForm_sifreTekrar => Center(
-        child: SizedBox(
-          height: 44,
-          width: 380,
-          child: TextField(
-            textAlignVertical: TextAlignVertical.center,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.remove_red_eye),
-                color: Colors.grey,
-              ),
-              contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-              filled: true,
-              //focusedBorder: outlineInputBorder,
-              focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              hintText: "tekrar sifre",
-              hintStyle: TextStyle(color: Colors.grey),
-              fillColor: Color.fromRGBO(60, 60, 67, 0.6),
-            ),
-          ),
-        ),
-      );
-
-  Widget get _LoginButton => SizedBox(
-        width: 380,
-        height: 44,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.purple[300],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12))),
-          onPressed: () {},
-          child: Text('Kaydol'),
+  Widget get _textButton => ButtonWidget.textBtn(
+        () {
+          Navigator.pushNamed(context, 'login');
+        },
+        Text(
+          'Zaten bir hesabın var mı? \n Giriş Yap',
+          textAlign: TextAlign.center,
         ),
       );
 }
