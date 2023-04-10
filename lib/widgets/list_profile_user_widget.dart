@@ -8,26 +8,40 @@ import 'package:flutter/material.dart';
 import '../models/userJson.dart';
 import 'list_icon_widget.dart';
 
-class ListBuilderWidget extends StatefulWidget {
+class ListProfileWidget extends StatefulWidget {
   Widget? listAvatar;
-  User? user;
+  String? username;
 
-  ListBuilderWidget({this.listAvatar, super.key, this.user});
+  ListProfileWidget({this.listAvatar, super.key, this.username});
 
   @override
-  State<ListBuilderWidget> createState() => _ListBuilderWidgetState();
+  State<ListProfileWidget> createState() => _ListProfileWidgetState();
 }
 
-class _ListBuilderWidgetState extends State<ListBuilderWidget> {
+class _ListProfileWidgetState extends State<ListProfileWidget> {
   User _user = User();
+  Map<String, dynamic> userData = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userData = _user.getData(widget.username!);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: _user.jsonList.length,
-        itemBuilder: (context, index) {
-          return _listCont(index);
-        });
+    if (!userData.isEmpty) {
+      return ListView.builder(
+          itemCount: 1,
+          itemBuilder: (context, index) {
+            return _listCont(index);
+          });
+    } else {
+      return Text(
+        "Henüz bir şey yazmadınız",
+        style: TextStyle(color: Colors.amber, fontSize: 20),
+      );
+    }
   }
 
   Widget _listCont(index) => Container(
@@ -72,7 +86,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   Widget _listContext(index) => Column(
         children: [
           Text(
-            _user.jsonList[index]['text'].toString(),
+            userData['text'].toString(),
             style: TextStyle(
                 color: Color.fromRGBO(255, 250, 250, 1),
                 fontSize: 14,
@@ -85,16 +99,16 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
               children: [
                 ListIconWidget(
                     icon: Icons.messenger_outline_rounded,
-                    count: _user.jsonList[index]['commentCount']),
+                    count: userData['commentCount']),
                 ListIconWidget(
                     icon: Icons.arrow_upward_rounded,
-                    count: _user.jsonList[index]['upCount']),
+                    count: userData['upCount']),
                 ListIconWidget(
                     icon: Icons.arrow_downward_rounded,
-                    count: _user.jsonList[index]['dowCount']),
+                    count: userData['dowCount']),
                 ListIconWidget(
                     icon: Icons.bookmark_border_rounded,
-                    count: _user.jsonList[index]['bookmarkerCount']),
+                    count: userData['bookmarkerCount']),
               ],
             ),
           )
@@ -112,11 +126,11 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         direction: Axis.horizontal,
         runSpacing: 3,
         children: [
-          _listCartUserName(_user.jsonList[index]['name'].toString()),
+          _listCartUserName(userData['name'].toString()),
         ],
       );
   Widget _listTimeStamp(index) => Text(
-        _user.jsonList[index]['timestamp'].toString(),
+        userData['timestamp'].toString(),
         style:
             TextStyle(fontSize: 14, color: Color.fromRGBO(203, 208, 217, 1.0)),
       );

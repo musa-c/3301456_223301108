@@ -1,6 +1,8 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+
+import '../models/userJson.dart';
 
 class ListCardUserWidget extends StatefulWidget {
   const ListCardUserWidget({super.key});
@@ -10,59 +12,62 @@ class ListCardUserWidget extends StatefulWidget {
 }
 
 class _ListCardUserWidgetState extends State<ListCardUserWidget> {
+  User _user = User();
+
   @override
   Widget build(BuildContext context) {
     return _ListViewBuilder;
   }
 
   Widget get _ListViewBuilder => ListView.builder(
-        itemCount: 10,
+        itemCount: _user.jsonList.length,
         itemBuilder: (context, index) {
-          return _card;
+          return _card(index);
         },
       );
 
-  Widget get _card => Card(
+  Widget _card(index) => Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0.0),
       ),
       margin: const EdgeInsets.all(0),
-      child: _CardChild);
+      child: _CardChild(index));
 
-  Widget get _CardChild => Container(
+  Widget _CardChild(index) => Container(
         color: Colors.black,
         // padding: EdgeInsets.all(5),
         child: Column(
-          children: _childeren,
+          children: _childeren(index),
         ),
       );
 
-  List<Widget> get _childeren => [
-        _ListTile,
+  List<Widget> _childeren(index) => [
+        _ListTile(index),
         const Divider(
           height: 1,
           color: Colors.grey,
         )
       ];
 
-  Widget get _ListTile => ListTile(
-      leading: _ListTileLeading,
-      title: _ListTileTitle,
-      subtitle: _ListTileSubTitle);
+  Widget _ListTile(index) => ListTile(
+      leading: _ListTileLeading(index),
+      title: _ListTileTitle(index),
+      subtitle: _ListTileSubTitle(index));
 
-  Widget get _ListTileLeading => const CircleAvatar(
+  Widget _ListTileLeading(index) => CircleAvatar(
         radius: 24,
-        backgroundImage: NetworkImage('https://source.unsplash.com/random'),
+        backgroundImage:
+            NetworkImage('https://picsum.photos/id/${index + 9}/200/300'),
       );
 
-  Widget get _ListTileTitle => const Text(
-        'Kullanıcı sdsd',
+  Widget _ListTileTitle(index) => Text(
+        _user.jsonList[index]['name'],
         style: TextStyle(
             fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white),
       );
 
-  Widget get _ListTileSubTitle => const Text(
-        "@musac",
+  Widget _ListTileSubTitle(index) => Text(
+        "@${_user.jsonList[index]['username']}",
         style: TextStyle(color: Colors.grey),
       );
 }

@@ -1,5 +1,9 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
+
+import 'package:abc/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../models/userJson.dart';
 import '../widgets/list_builder_widget.dart';
 
 class ProfileView extends StatefulWidget {
@@ -20,6 +24,7 @@ class _ProfileViewState extends State<ProfileView> {
   Map<dynamic, dynamic>? args;
   String? username;
   String? passw;
+  User _user = User();
 
   @override
   void initState() {
@@ -44,8 +49,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    print(username);
-    print(passw);
     return MaterialApp(home: Scaffold(body: _ProfileContext));
   }
 
@@ -104,5 +107,5 @@ class _ProfileViewState extends State<ProfileView> {
   Widget get _ListViewExpanded => Expanded(
       flex: 3, child: Container(width: double.infinity, child: _ListView));
 
-  Widget get _ListView => ListBuilderWidget();
+  Widget get _ListView => ListProfileWidget(username: username);
 }
