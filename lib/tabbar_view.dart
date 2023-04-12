@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:abc/models/userdata.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/home_screen.dart';
@@ -100,7 +101,10 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
                   arguments: {"username": username, "pasw": pasw});
             },
             child: CircleAvatar(
-                radius: 17.5, backgroundImage: NetworkImage(_url))),
+                radius: 17.5,
+                backgroundImage: UserData().getAvatar(username) == null
+                    ? NetworkImage(_url)
+                    : NetworkImage(UserData().getAvatar(username)!))),
       ]);
 
   Widget get _appBarTitle => Text("fısılsda");

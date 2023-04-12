@@ -56,8 +56,7 @@ class _ListCardUserWidgetState extends State<ListCardUserWidget> {
 
   Widget _ListTileLeading(index) => CircleAvatar(
         radius: 24,
-        backgroundImage:
-            NetworkImage('https://picsum.photos/id/${index + 9}/200/300'),
+        backgroundImage: NetworkImage(_user.jsonList[index]['avatar']),
       );
 
   Widget _ListTileTitle(index) => Text(

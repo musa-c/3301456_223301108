@@ -6,6 +6,7 @@ import 'package:abc/models/userJson.dart';
 import 'package:flutter/material.dart';
 
 import '../models/userJson.dart';
+import '../models/userdata.dart';
 import 'list_icon_widget.dart';
 
 class ListBuilderWidget extends StatefulWidget {
@@ -25,17 +26,26 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: _user.jsonList.length,
-        itemBuilder: (context, index) {
-          return _listCont(index);
+        itemBuilder: (BuildContext context, int index) {
+          // Map<String, dynamic> item = _user.jsonList[index];
+          // String name = item['name'];
+          // String text = item['text'];
+          // print(text);
+          final item = _user.jsonList[index];
+          return Column(
+            children: item['text'].map<Widget>((text) {
+              return _listCont(index, text);
+            }).toList(),
+          );
         });
   }
 
-  Widget _listCont(index) => Container(
+  Widget _listCont(index, text) => Container(
       decoration: BoxDecoration(
         color: Colors.black,
         border: _listContBorder,
       ),
-      child: _listTile(index));
+      child: _listTile(index, text));
 
   Border get _listContBorder => const Border(
       bottom: BorderSide(
@@ -46,10 +56,10 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       right: BorderSide(width: 0),
       left: BorderSide(width: 0));
 
-  Widget _listTile(index) => ListTile(
+  Widget _listTile(index, text) => ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
       leading: _listAvatar(index),
-      subtitle: _listContext(index),
+      subtitle: _listContext(index, text),
       title: _listTitle(index));
 
   Widget _listAvatar(index) => Container(
@@ -60,8 +70,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
 
   Widget _listAvatarChilt(index) => CircleAvatar(
         radius: 24,
-        backgroundImage:
-            NetworkImage('https://picsum.photos/id/${index + 9}/200/300'),
+        backgroundImage: NetworkImage(_user.jsonList[index]['avatar']),
       );
 
   Widget _listCartUserName(String text) => Text(
@@ -69,10 +78,11 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         style: titleTextStyle,
       );
 
-  Widget _listContext(index) => Column(
+  Widget _listContext(index, text) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _user.jsonList[index]['text'].toString(),
+            text,
             style: TextStyle(
                 color: Color.fromRGBO(255, 250, 250, 1),
                 fontSize: 14,

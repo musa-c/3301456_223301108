@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
+import 'package:abc/models/userdata.dart';
 import 'package:abc/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final String _url = "https://picsum.photos/id/237/200/300";
   Map<dynamic, dynamic>? args;
   String? username;
   String? passw;
@@ -49,7 +51,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: _ProfileContext));
+    return Container(child: _ProfileContext);
   }
 
   Widget get _ProfileContext => Container(
@@ -84,12 +86,14 @@ class _ProfileViewState extends State<ProfileView> {
   Widget get _ProfileAvatarWrap => Wrap(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_ProfileAvatar, _ProfileUserNameSurname, _ProfileUserName],
+          children: [_ProfileAvatar, _ProfileUserNameSurname],
         ),
       ]);
 
   Widget get _ProfileAvatar => CircleAvatar(
-        backgroundColor: Colors.grey,
+        backgroundImage: UserData().getAvatar(username!) == null
+            ? NetworkImage(_url)
+            : NetworkImage(UserData().getAvatar(username!)!),
         radius: 40,
       );
 
@@ -99,10 +103,10 @@ class _ProfileViewState extends State<ProfileView> {
             fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
       );
 
-  Widget get _ProfileUserName => Text(
-        "şifre:" + passw!,
-        style: TextStyle(color: Colors.white),
-      );
+  // Widget get _ProfileUserName => Text(
+  //       "şifre:" + passw!,
+  //       style: TextStyle(color: Colors.white),
+  //     );
 
   Widget get _ListViewExpanded => Expanded(
       flex: 3, child: Container(width: double.infinity, child: _ListView));
