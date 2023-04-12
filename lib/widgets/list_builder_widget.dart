@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:flutter/material.dart';
 
 import 'dart:convert';
 
 import 'package:abc/models/userJson.dart';
-import 'package:flutter/material.dart';
 
 import '../models/userJson.dart';
 import '../models/userdata.dart';
 import 'list_icon_widget.dart';
+import 'package:animated_icon/animate_icons.dart';
 
 class ListBuilderWidget extends StatefulWidget {
   Widget? listAvatar;
@@ -23,14 +24,33 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   User _user = User();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  void setUpCount(String username, int index) {
+    setState(() {
+      _user.setUserUpCount(username, index);
+    });
+  }
+
+  void setDownCount(String username, int index) {
+    setState(() {
+      _user.setDownCount(username, index);
+    });
+  }
+
+  void setBookmarkerCount(String username, int index) {
+    setState(() {
+      _user.setBookMarkerCount(username, index);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: _user.jsonList.length,
         itemBuilder: (BuildContext context, int index) {
-          // Map<String, dynamic> item = _user.jsonList[index];
-          // String name = item['name'];
-          // String text = item['text'];
-          // print(text);
           final item = _user.jsonList[index];
           return Column(
             children: item['text'].map<Widget>((text) {
@@ -95,16 +115,30 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
               children: [
                 ListIconWidget(
                     icon: Icons.messenger_outline_rounded,
-                    count: _user.jsonList[index]['commentCount']),
+                    count: _user.jsonList[index]['commentCount'],
+                    onTap: () {}),
                 ListIconWidget(
-                    icon: Icons.arrow_upward_rounded,
-                    count: _user.jsonList[index]['upCount']),
+                  icon: Icons.arrow_upward_rounded,
+                  count: _user.jsonList[index]['upCount'],
+                  onTap: () {
+                    setUpCount(_user.jsonList[index]['username'], index);
+                  },
+                ),
                 ListIconWidget(
-                    icon: Icons.arrow_downward_rounded,
-                    count: _user.jsonList[index]['dowCount']),
+                  icon: Icons.arrow_downward_rounded,
+                  count: _user.jsonList[index]['dowCount'],
+                  onTap: () {
+                    setDownCount(_user.jsonList[index]['username'], index);
+                  },
+                ),
                 ListIconWidget(
-                    icon: Icons.bookmark_border_rounded,
-                    count: _user.jsonList[index]['bookmarkerCount']),
+                  icon: Icons.bookmark_border_rounded,
+                  count: _user.jsonList[index]['bookmarkerCount'],
+                  onTap: () {
+                    setBookmarkerCount(
+                        _user.jsonList[index]['username'], index);
+                  },
+                ),
               ],
             ),
           )
@@ -122,7 +156,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         direction: Axis.horizontal,
         runSpacing: 3,
         children: [
-          _listCartUserName(_user.jsonList[index]['name'].toString()),
+          _listCartUserName(_user.jsonList[index]['username'].toString()),
         ],
       );
   Widget _listTimeStamp(index) => Text(

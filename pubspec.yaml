@@ -7,6 +7,7 @@ environment:
   sdk: ">=2.19.4 <3.0.0"
 
 dependencies:
+  animated_icon: ^0.0.4
   flutter:
     sdk: flutter
   flutter_lorem: ^2.0.0

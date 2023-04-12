@@ -35,9 +35,9 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _user.getData(widget.username!).isEmpty
-        ? userData[0]["username"] = null
-        : userData.add(_user.getData(widget.username!));
+    if (!(_user.getData(widget.username!).isEmpty)) {
+      userData.add(_user.getData(widget.username!));
+    }
   }
 
   void userDataAdd() {
@@ -53,10 +53,21 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       //   "dowCount": 0,
       //   "bookmarkerCount": 0
       // });
+
+      // UserData().addUser(widget.username!, _textData, );
+
       userData.add({
+        "name": "",
         "text": [_textData],
-        "username": widget.username
+        "username": widget.username,
+        "timestamp": '${DateTime.now().hour}:${DateTime.now().minute}',
+        "commentCount": 0,
+        "upCount": 0,
+        "dowCount": 0,
+        "bookmarkerCount": 0
       });
+
+      _user.jsonList.addAll(userData);
       // userData[0]['text'].add(_textData);
       // userData[0]['username'].add(widget.username);
       // userData[0]['username'] = (widget.username!);
@@ -78,7 +89,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (userData[0]['text'] != []) {
+    if (userData.any((element) => element['username'] == widget.username)) {
       print(userData);
       return Scaffold(
           backgroundColor: Colors.black,
@@ -247,17 +258,25 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ListIconWidget(
-                    icon: Icons.messenger_outline_rounded,
-                    count: userData[index]['commentCount']),
+                  icon: Icons.messenger_outline_rounded,
+                  count: userData[index]['commentCount'],
+                  onTap: () {},
+                ),
                 ListIconWidget(
-                    icon: Icons.arrow_upward_rounded,
-                    count: userData[index]['upCount']),
+                  icon: Icons.arrow_upward_rounded,
+                  count: userData[index]['upCount'],
+                  onTap: () {},
+                ),
                 ListIconWidget(
-                    icon: Icons.arrow_downward_rounded,
-                    count: userData[index]['dowCount']),
+                  icon: Icons.arrow_downward_rounded,
+                  count: userData[index]['dowCount'],
+                  onTap: () {},
+                ),
                 ListIconWidget(
-                    icon: Icons.bookmark_border_rounded,
-                    count: userData[index]['bookmarkerCount']),
+                  icon: Icons.bookmark_border_rounded,
+                  count: userData[index]['bookmarkerCount'],
+                  onTap: () {},
+                ),
               ],
             ),
           )

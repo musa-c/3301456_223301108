@@ -90,4 +90,42 @@ class User {
     });
     return user;
   }
+
+  setUserUpCount(username, index) {
+    jsonList.forEach((element) {
+      if (element["username"] == username) {
+        if (_userdata.getUserUpCount(username) == element['upCount']) {
+          element['upCount'] += 1;
+        } else {
+          element['upCount'] -= 1;
+        }
+      }
+    });
+  }
+
+  setDownCount(username, index) {
+    jsonList.forEach((element) {
+      if (element["username"] == username) {
+        if (_userdata.getUserDowCount(username) == element['dowCount']) {
+          element['dowCount'] -= 1;
+        } else {
+          element['dowCount'] += 1;
+        }
+      }
+      ;
+    });
+  }
+
+  setBookMarkerCount(username, index) {
+    jsonList.forEach((element) {
+      if (element["username"] == username) {
+        if (_userdata.getUserBookmarkerCount(username) ==
+            element['bookmarkerCount']) {
+          element['bookmarkerCount'] += 1;
+        } else {
+          element['bookmarkerCount'] -= 1;
+        }
+      }
+    });
+  }
 }

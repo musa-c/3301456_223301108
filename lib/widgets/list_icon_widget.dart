@@ -4,7 +4,10 @@ class ListIconWidget extends StatefulWidget {
   IconData icon;
   Color? color;
   int? count;
-  ListIconWidget({required this.icon, super.key, this.color, this.count});
+  Function? onTap;
+
+  ListIconWidget(
+      {required this.icon, super.key, this.color, this.count, this.onTap});
 
   @override
   State<ListIconWidget> createState() => ListIconWidgetState();
@@ -14,7 +17,7 @@ class ListIconWidgetState extends State<ListIconWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => widget.onTap!() ?? () {},
       child: Wrap(spacing: 5, children: [
         Icon(
           widget.icon,

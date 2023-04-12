@@ -11,7 +11,6 @@ class UserData {
     ],
     _musaUsername: [
       "Quero nitesco solvo moti super. Liber occasio pudeo gesto satio ea tumulus excito. Contabesco pressi huic. Summa, ullus. Do archa.",
-      "Egnum vetus militaris rego textus narro comprehendo labor procinctu. Quodnam memor quod. Prope intercepi pulex conspicio reddo ferre per volup spargo. Quisnam mei simul mos funis oportunitas labor emo spiculum."
     ],
     _emreUsername: [
       "Egnum vetus militaris rego textus narro comprehendo labor procinctu. Quodnam memor quod. Prope intercepi pulex conspicio reddo ferre per volup spargo. Quisnam mei simul mos funis oportunitas labor emo spiculum.",
@@ -89,7 +88,8 @@ class UserData {
   int? getUserDowCount(String key) => _userDownCount[key];
   int? getUserBookmarkerCount(String key) => _userBookmarkerCount[key];
 
-  void addUserText(String key, String text) {
-    _userText[key]!.add(text);
+  void addUser(String key, String text) {
+    _userName[key] = key;
+    _userText[key] = [text];
   }
 }
