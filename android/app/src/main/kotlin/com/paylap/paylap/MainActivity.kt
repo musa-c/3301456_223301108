@@ -1,4 +1,4 @@
-package com.abcde.abcdef
+package com.paylap.paylap
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -21,7 +21,7 @@ class LogInView extends StatefulWidget {
 class _LogInViewState extends State<LogInView> {
   String? username = "";
   String? pass = "";
-  late bool sifregizle = false;
+  late bool sifregizle = true;
 
   void Control() {
     if ((username!.length > 2) && (pass!.length >= 6)) {
