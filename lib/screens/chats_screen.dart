@@ -11,16 +11,6 @@ class ChatsView extends StatefulWidget {
 class _ChatsViewState extends State<ChatsView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text("Mesajlar"),
-      ),
-      body: const ListCardUserWidget(),
-    );
+    return Container(color: Colors.black, child: ListCardUserWidget());
   }
 }

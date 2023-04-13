@@ -14,8 +14,9 @@ import 'list_icon_widget.dart';
 class ListProfileWidget extends StatefulWidget {
   Widget? listAvatar;
   String? username;
+  String? avatar;
 
-  ListProfileWidget({this.listAvatar, super.key, this.username});
+  ListProfileWidget({this.listAvatar, super.key, this.username, this.avatar});
 
   @override
   State<ListProfileWidget> createState() => _ListProfileWidgetState();
@@ -94,13 +95,15 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       return Scaffold(
           backgroundColor: Colors.black,
           resizeToAvoidBottomInset: true,
-          floatingActionButton: _floatingActionButton,
+          floatingActionButton:
+              widget.avatar != null ? null : _floatingActionButton,
           body: _listViewBuilder);
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.black,
-        floatingActionButton: _floatingActionButton,
+        floatingActionButton:
+            widget.avatar != null ? null : _floatingActionButton,
         body: _text,
       );
     }

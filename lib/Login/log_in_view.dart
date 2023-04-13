@@ -21,6 +21,7 @@ class LogInView extends StatefulWidget {
 class _LogInViewState extends State<LogInView> {
   String? username = "";
   String? pass = "";
+  late bool sifregizle = false;
 
   void Control() {
     if ((username!.length > 2) && (pass!.length >= 6)) {
@@ -69,7 +70,7 @@ class _LogInViewState extends State<LogInView> {
     );
   }
 
-  Widget get _appTitle => AppTitleWidget(app_title: "FSOCİETY");
+  Widget get _appTitle => AppTitleWidget(app_title: "PAYLAP");
 
   Widget get _textFormKullAdi => TextFieldWidget(
       onDataChanged: (text) {
@@ -80,9 +81,16 @@ class _LogInViewState extends State<LogInView> {
       hintText: "Kullanıcı Adı");
 
   Widget get _textFormSifre => TextFieldWidget(
+      sifregizle: sifregizle,
       iconButton: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.remove_red_eye),
+        onPressed: () {
+          setState(() {
+            sifregizle = !sifregizle;
+          });
+        },
+        icon: sifregizle
+            ? Icon(Icons.visibility_off)
+            : Icon(Icons.remove_red_eye),
         color: Colors.grey,
       ),
       onDataChanged: (text) {

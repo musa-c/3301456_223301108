@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
 import 'package:abc/models/userdata.dart';
+import 'package:abc/screens/setting_screen.dart';
 import 'package:abc/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class _ProfileViewState extends State<ProfileView> {
   final String _url = "https://picsum.photos/id/237/200/300";
   Map<dynamic, dynamic>? args;
   String? username;
+  String? avatar;
   String? passw;
   User _user = User();
 
@@ -45,6 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
     super.didChangeDependencies();
     args = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>?;
     username = widget.username ?? args?['username'];
+    avatar = args?['avatar'];
     passw = widget.passw ?? args?['pasw'];
     userNameAndPasswSet(username, passw);
   }
@@ -67,12 +70,29 @@ class _ProfileViewState extends State<ProfileView> {
       );
 
   Widget get _ProfileSettingIcon => Container(
-        margin: EdgeInsets.fromLTRB(0, 12, 12, 0),
-        child: Icon(
-          Icons.settings,
-          color: Colors.white,
-        ),
-      );
+      margin: EdgeInsets.fromLTRB(0, 12, 12, 0),
+      child: avatar != null
+          ? null
+          : InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: false,
+                      builder: (context) => Scaffold(
+                          backgroundColor: Colors.black,
+                          appBar: AppBar(
+                            bottom: _appBarDivider,
+                            backgroundColor: Colors.black,
+                            title: Text("Ayarlar"),
+                          ),
+                          body: SettingView()),
+                    ));
+              },
+              child: Icon(
+                Icons.settings,
+                color: Colors.white,
+              )));
 
   Widget get _ProfileAvatarUserName => Expanded(
         child: Center(
@@ -92,15 +112,18 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget get _ProfileAvatar => CircleAvatar(
         backgroundImage: UserData().getAvatar(username!) == null
-            ? NetworkImage(_url)
+            ? NetworkImage(avatar ?? _url)
             : NetworkImage(UserData().getAvatar(username!)!),
         radius: 40,
       );
 
-  Widget get _ProfileUserNameSurname => Text(
-        username!,
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+  Widget get _ProfileUserNameSurname => Container(
+        margin: EdgeInsets.all(20),
+        child: Text(
+          username!,
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
       );
 
   // Widget get _ProfileUserName => Text(
@@ -109,7 +132,16 @@ class _ProfileViewState extends State<ProfileView> {
   //     );
 
   Widget get _ListViewExpanded => Expanded(
-      flex: 3, child: Container(width: double.infinity, child: _ListView));
+      flex: 2, child: Container(width: double.infinity, child: _ListView));
 
-  Widget get _ListView => ListProfileWidget(username: username);
+  Widget get _ListView => ListProfileWidget(username: username, avatar: avatar);
+
+  PreferredSize get _appBarDivider => PreferredSize(
+        preferredSize: Size.fromHeight(1.0),
+        child: Divider(
+          height: 1,
+          thickness: 1,
+          color: Color.fromARGB(255, 52, 52, 52),
+        ),
+      );
 }

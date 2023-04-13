@@ -7,9 +7,14 @@ class TextFieldWidget extends StatelessWidget {
   String hintText;
   IconButton? iconButton;
   final ValueChanged<String>? onDataChanged;
+  bool? sifregizle;
 
   TextFieldWidget(
-      {this.onDataChanged, super.key, required this.hintText, this.iconButton});
+      {this.onDataChanged,
+      super.key,
+      required this.hintText,
+      this.iconButton,
+      this.sifregizle});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +23,7 @@ class TextFieldWidget extends StatelessWidget {
         height: 44,
         width: 380,
         child: TextField(
+            obscureText: sifregizle ?? false,
             style: TextStyle(color: Colors.white),
             onChanged: (text) {
               if (onDataChanged != null) {

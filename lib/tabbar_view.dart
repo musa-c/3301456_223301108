@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:abc/models/userdata.dart';
+import 'package:abc/screens/chats_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'screens/home_screen.dart';
 import 'screens/profile_screen.dart';
@@ -97,8 +99,21 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
       Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
         InkWell(
             onTap: () {
-              Navigator.pushNamed(context, "profile",
-                  arguments: {"username": username, "pasw": pasw});
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      fullscreenDialog: false,
+                      builder: (context) => Scaffold(
+                          appBar: AppBar(
+                            bottom: _appBarDivider,
+                            backgroundColor: Colors.black,
+                            title: Text("Profil"),
+                          ),
+                          body: ProfileView()),
+                      settings: RouteSettings(
+                          arguments: {"username": username, "pasw": pasw})));
+              // Navigator.pushNamed(context, "profile",
+              //     arguments: {"username": username, "pasw": pasw});
             },
             child: CircleAvatar(
                 radius: 17.5,
@@ -107,7 +122,10 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
                     : NetworkImage(UserData().getAvatar(username)!))),
       ]);
 
-  Widget get _appBarTitle => Text("fısılsda");
+  Widget get _appBarTitle => Text(
+        "PAYLAP",
+        style: GoogleFonts.raleway(textStyle: TextStyle(letterSpacing: 14)),
+      );
 
   Widget get _appBarTitleSearch => SizedBox(
         height: 28,
@@ -146,7 +164,19 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
   Widget get _appBarIcon => IconButton(
         icon: Icon(Icons.email_outlined, size: 24),
         onPressed: () {
-          Navigator.pushNamed(context, 'chats');
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                fullscreenDialog: false,
+                builder: (context) => Scaffold(
+                    appBar: AppBar(
+                      bottom: _appBarDivider,
+                      backgroundColor: Colors.black,
+                      title: Text("Mesajlar"),
+                    ),
+                    body: ChatsView()),
+              ));
+          // Navigator.push(context, 'chats');
         }, // omitting onPressed makes the button disabled
       );
 }
