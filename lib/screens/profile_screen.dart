@@ -1,12 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
-import 'package:abc/models/userdata.dart';
 import 'package:abc/screens/setting_screen.dart';
 import 'package:abc/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../models/userJson.dart';
-import '../widgets/list_builder_widget.dart';
 
 class ProfileView extends StatefulWidget {
   String? username;
@@ -28,7 +24,7 @@ class _ProfileViewState extends State<ProfileView> {
   String? username;
   String? avatar;
   String? passw;
-  User _user = User();
+  // User _user = User();
 
   @override
   void initState() {
@@ -46,9 +42,9 @@ class _ProfileViewState extends State<ProfileView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     args = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>?;
-    username = widget.username ?? args?['username'];
-    avatar = args?['avatar'];
-    passw = widget.passw ?? args?['pasw'];
+    // username = widget.username ?? args?['username'];
+    // avatar = args?['avatar'];
+    // passw = widget.passw ?? args?['pasw'];
     userNameAndPasswSet(username, passw);
   }
 
@@ -111,16 +107,18 @@ class _ProfileViewState extends State<ProfileView> {
       ]);
 
   Widget get _ProfileAvatar => CircleAvatar(
-        backgroundImage: UserData().getAvatar(username!) == null
-            ? NetworkImage(avatar ?? _url)
-            : NetworkImage(UserData().getAvatar(username!)!),
+        backgroundImage: NetworkImage(_url),
+        // UserData().getAvatar(username!) == null
+        //     ? NetworkImage(avatar ?? _url)
+        //     :
+        //     NetworkImage(UserData().getAvatar(username!)!),
         radius: 40,
       );
 
   Widget get _ProfileUserNameSurname => Container(
         margin: EdgeInsets.all(20),
         child: Text(
-          username!,
+          "musac",
           style: TextStyle(
               fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -132,9 +130,9 @@ class _ProfileViewState extends State<ProfileView> {
   //     );
 
   Widget get _ListViewExpanded => Expanded(
-      flex: 2, child: Container(width: double.infinity, child: _ListView));
+      flex: 2, child: SizedBox(width: double.infinity, child: _ListView));
 
-  Widget get _ListView => ListProfileWidget(username: username, avatar: avatar);
+  Widget get _ListView => ListProfileWidget();
 
   PreferredSize get _appBarDivider => PreferredSize(
         preferredSize: Size.fromHeight(1.0),

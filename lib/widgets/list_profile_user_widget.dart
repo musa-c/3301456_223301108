@@ -1,22 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print
 
-import 'dart:convert';
-
-import 'package:abc/models/userJson.dart';
-import 'package:abc/models/userdata.dart';
-import 'package:abc/widgets/button_widget.dart';
-import 'package:abc/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../models/userJson.dart';
 import 'list_icon_widget.dart';
 
 class ListProfileWidget extends StatefulWidget {
-  Widget? listAvatar;
-  String? username;
-  String? avatar;
-
-  ListProfileWidget({this.listAvatar, super.key, this.username, this.avatar});
+  const ListProfileWidget({super.key});
 
   @override
   State<ListProfileWidget> createState() => _ListProfileWidgetState();
@@ -25,61 +14,11 @@ class ListProfileWidget extends StatefulWidget {
 class _ListProfileWidgetState extends State<ListProfileWidget> {
   final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
-  String _textData = "";
-  User _user = User();
 
-  List<Map<String, dynamic>> userData = [
-    {"username": null, "text": []},
-    {"username": null, "text": []}
-  ];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (!(_user.getData(widget.username!).isEmpty)) {
-      userData.add(_user.getData(widget.username!));
-    }
-  }
-
-  void userDataAdd() {
-    setState(() {
-      // userData[0].addAll({
-      //   "name": "",
-      //   "username": widget.username!,
-      //   "avatar": UserData().getAvatar(widget.username!),
-      //   "text": [_textData],
-      //   "timestamp": '${DateTime.now().hour}:${DateTime.now().minute}',
-      //   "commentCount": 0,
-      //   "upCount": 0,
-      //   "dowCount": 0,
-      //   "bookmarkerCount": 0
-      // });
-
-      // UserData().addUser(widget.username!, _textData, );
-
-      userData.add({
-        "name": "",
-        "text": [_textData],
-        "username": widget.username,
-        "timestamp": '${DateTime.now().hour}:${DateTime.now().minute}',
-        "commentCount": 0,
-        "upCount": 0,
-        "dowCount": 0,
-        "bookmarkerCount": 0
-      });
-
-      _user.jsonList.addAll(userData);
-      // userData[0]['text'].add(_textData);
-      // userData[0]['username'].add(widget.username);
-      // userData[0]['username'] = (widget.username!);
-      // userData[0]['avatar'] = UserData().getAvatar(widget.username!);
-      // userData[0]['timestamp'] =
-      //     '${DateTime.now().hour}:${DateTime.now().minute}';
-      // userData[0]['commentCount'] = 0;
-      // userData[0]['upCount'] = 0;
-      // userData[0]['dowCount'] = 0;
-      // userData[0]['bookmarkerCount'] = 0;
-    });
   }
 
   // String time() => {
@@ -90,23 +29,23 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (userData.any((element) => element['username'] == widget.username)) {
-      print(userData);
-      return Scaffold(
-          backgroundColor: Colors.black,
-          resizeToAvoidBottomInset: true,
-          floatingActionButton:
-              widget.avatar != null ? null : _floatingActionButton,
-          body: _listViewBuilder);
-    } else {
-      return Scaffold(
-        resizeToAvoidBottomInset: true,
+    // if (userData.any((element) => element['username'] == widget.username)) {
+    //   print(userData);
+    return Scaffold(
         backgroundColor: Colors.black,
-        floatingActionButton:
-            widget.avatar != null ? null : _floatingActionButton,
-        body: _text,
-      );
-    }
+        resizeToAvoidBottomInset: true,
+        // floatingActionButton:
+        //     widget.avatar != null ? null : _floatingActionButton,
+        body: _listViewBuilder);
+    // } else {
+    //   return Scaffold(
+    //     resizeToAvoidBottomInset: true,
+    //     backgroundColor: Colors.black,
+    //     floatingActionButton:
+    //         widget.avatar != null ? null : _floatingActionButton,
+    //     body: _text,
+    //   );
+    // }
   }
 
   Widget get _text => Center(
@@ -175,41 +114,36 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                         // Geçerlilik denetimi yapılabilir
                         return null;
                       },
-                      onChanged: (value) {
-                        setState(() {
-                          _textData = value;
-                        });
-                        // Metin değiştiğinde yapılacak işlemler
-                      },
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     _textData = value;
+                      //   });
+                      //   // Metin değiştiğinde yapılacak işlemler
+                      // },
                     ),
                   ),
-                  ButtonWidget(
-                      onPressed: () {
-                        userDataAdd();
-                      },
-                      child: Text("Gönder gitsin"))
+                  // ButtonWidget(
+                  //     onPressed: () {
+                  //       userDataAdd();
+                  //     },
+                  //     child: Text("Gönder gitsin"))
                 ],
               ));
         },
       );
 
   Widget get _listViewBuilder => ListView.builder(
-      itemCount: userData.length,
+      itemCount: 1,
       itemBuilder: (context, index) {
-        final item = userData[index];
-        return Column(
-          children: item['text'].map<Widget>((text) {
-            return _listCont(index, text);
-          }).toList(),
-        );
+        return _listCont();
       });
 
-  Widget _listCont(index, text) => Container(
+  Widget _listCont() => Container(
       decoration: BoxDecoration(
         color: Colors.black,
         border: _listContBorder,
       ),
-      child: _listTile(index, text));
+      child: _listTile());
 
   Border get _listContBorder => const Border(
       bottom: BorderSide(
@@ -220,35 +154,35 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       right: BorderSide(width: 0),
       left: BorderSide(width: 0));
 
-  Widget _listTile(index, text) => ListTile(
+  Widget _listTile() => ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-      leading: _listAvatar(index),
-      subtitle: _listContext(index, text),
-      title: _listTitle(index));
+      leading: _listAvatar(),
+      subtitle: _listContext(),
+      title: _listTitle());
 
-  Widget _listAvatar(index) => Container(
+  Widget _listAvatar() => Container(
       height: double.infinity,
       // ignore: sized_box_for_whitespace
       margin: EdgeInsets.fromLTRB(0, 0, 0, 14),
-      child: _listAvatarChilt(index));
+      child: _listAvatarChilt());
 
-  Widget _listAvatarChilt(index) => CircleAvatar(
-        radius: 24,
-        backgroundImage: UserData().getAvatar(widget.username!) == null
-            ? NetworkImage(_url)
-            : NetworkImage(UserData().getAvatar(widget.username!)!),
-      );
+  Widget _listAvatarChilt() =>
+      CircleAvatar(radius: 24, backgroundImage: NetworkImage(_url)
+          // UserData().getAvatar(widget.username!) == null
+          //     ? NetworkImage(_url)
+          //     : NetworkImage(UserData().getAvatar(widget.username!)!),
+          );
 
   Widget _listCartUserName(String text) => Text(
         text,
         style: titleTextStyle,
       );
 
-  Widget _listContext(index, text) => Column(
+  Widget _listContext() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            text,
+            "deneme post",
             textAlign: TextAlign.start,
             style: TextStyle(
                 color: Color.fromRGBO(255, 250, 250, 1),
@@ -262,22 +196,22 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
               children: [
                 ListIconWidget(
                   icon: Icons.messenger_outline_rounded,
-                  count: userData[index]['commentCount'],
+                  count: 4,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_upward_rounded,
-                  count: userData[index]['upCount'],
+                  count: 3,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_downward_rounded,
-                  count: userData[index]['dowCount'],
+                  count: 2,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.bookmark_border_rounded,
-                  count: userData[index]['bookmarkerCount'],
+                  count: 1,
                   onTap: () {},
                 ),
               ],
@@ -286,22 +220,25 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         ],
       );
 
-  Widget _listTitle(index) => Container(
+  Widget _listTitle() => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_listUserName(index), _listTimeStamp(index)],
+          children: [_listUserName(), _listTimeStamp()],
         ),
       );
 
-  Widget _listUserName(index) => Wrap(
+  Widget _listUserName() => Wrap(
         direction: Axis.horizontal,
         runSpacing: 3,
         children: [
-          _listCartUserName(userData[index]['username'].toString()),
+          Text(
+            "username",
+            style: TextStyle(color: Colors.amber),
+          ),
         ],
       );
-  Widget _listTimeStamp(index) => Text(
-        userData[index]['timestamp'].toString(),
+  Widget _listTimeStamp() => Text(
+        "time",
         style:
             TextStyle(fontSize: 14, color: Color.fromRGBO(203, 208, 217, 1.0)),
       );

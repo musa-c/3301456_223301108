@@ -3,8 +3,6 @@
 import 'package:abc/widgets/list_builder_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../models/user.dart';
-
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 

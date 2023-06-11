@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:abc/models/userdata.dart';
 import 'package:abc/screens/chats_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +9,8 @@ import 'screens/profile_screen.dart';
 import 'screens/search_screen.dart';
 
 class TabBarViewAbc extends StatefulWidget {
+  const TabBarViewAbc({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _TabBarViewAbcState();
@@ -33,10 +34,10 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
 
   @override
   Widget build(BuildContext context) {
-    var data = [];
-    data = ModalRoute.of(context)?.settings.arguments as List;
-    username = data[0];
-    passw = data[1];
+    // var data = [];
+    // data = ModalRoute.of(context)?.settings.arguments as List;
+    // username = data[0];
+    // passw = data[1];
 
     return MaterialApp(
       home: Scaffold(
@@ -72,8 +73,8 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
 
   Widget _getPageProfile() {
     return ProfileView(
-      username: username,
-      passw: passw,
+      username: "username",
+      passw: "passw",
       // onDataChanged: (newDatUser, newDataPassw) {
       //   setState(() {
       //     username = newDatUser;
@@ -115,11 +116,12 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
               // Navigator.pushNamed(context, "profile",
               //     arguments: {"username": username, "pasw": pasw});
             },
-            child: CircleAvatar(
-                radius: 17.5,
-                backgroundImage: UserData().getAvatar(username) == null
-                    ? NetworkImage(_url)
-                    : NetworkImage(UserData().getAvatar(username)!))),
+            child:
+                CircleAvatar(radius: 17.5, backgroundImage: NetworkImage(_url)
+                    // UserData().getAvatar(username) == null
+                    //     ? NetworkImage(_url)
+                    // : NetworkImage(UserData().getAvatar(username)!))
+                    )),
       ]);
 
   Widget get _appBarTitle => Text(

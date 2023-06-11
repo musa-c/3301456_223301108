@@ -3,11 +3,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:abc/Login/sign_up_view.dart';
-import 'package:abc/screens/home_screen.dart';
 import 'package:abc/widgets/app_title_widget.dart';
 import 'package:abc/widgets/button_widget.dart';
 import 'package:abc/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../tabbar_view.dart';
 
@@ -19,23 +19,103 @@ class LogInView extends StatefulWidget {
 }
 
 class _LogInViewState extends State<LogInView> {
-  String? username = "";
-  String? pass = "";
+  String? userOrEmail;
+  String? pass;
   late bool sifregizle = true;
+  bool isEmailAuth = false;
+  bool isLoading = false;
+  bool isNull = false;
 
-  void Control() {
-    if ((username!.length > 2) && (pass!.length >= 6)) {
-      var data = [];
-      data.add(username);
-      data.add(pass);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TabBarViewAbc(),
-            settings: RouteSettings(
-              arguments: data,
-            ),
-          ));
+  void userLogin(String userOrEmail, String password) async {
+    setState(() {
+      isLoading = true;
+    });
+    final http.Response response;
+    try {
+      if (isEmailAuth) {
+        response = await http.get(Uri.parse(
+            'http://localhost:26342/api/users/emailorPasswordCheck/$userOrEmail/$password'));
+      } else {
+        response = await http.get(Uri.parse(
+            'http://localhost:26342/api/users/usernameOrPasswordCheck/$userOrEmail/$password'));
+      }
+
+      if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TabBarViewAbc(),
+              settings: RouteSettings(
+                arguments: response.body,
+              ),
+            ));
+
+        // return User.fromJson(jsonDecode(response.body));
+      } else if (response.statusCode == 500) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Hata'),
+              content: Text('Hatalı giriş lütfen tekrar deneyiniz.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Tamam'),
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          isLoading = false;
+        });
+
+        // Handle other status codes if needed
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Hata'),
+            content: Text('API isteği sırasında bir hata oluştu: $e'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Tamam'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  bool checkValidation(String? userOrEmail, String? password) {
+    if (userOrEmail != null && password != null) {
+      setState(() {
+        isNull = false;
+      });
+      return true;
+    } else {
+      setState(() {
+        isNull = true;
+      });
+      return false;
     }
   }
 
@@ -50,6 +130,15 @@ class _LogInViewState extends State<LogInView> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _appTitle,
+              isNull
+                  ? Text(
+                      isEmailAuth
+                          ? "Lütfen email ve şifrenizi giriniz."
+                          : "Lütfen kullanıcı adı ve şifrenizi giriniz.",
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Container(),
+              SizedBox(height: 16),
               _textFormKullAdi,
               SizedBox(height: 16),
               _textFormSifre,
@@ -75,10 +164,10 @@ class _LogInViewState extends State<LogInView> {
   Widget get _textFormKullAdi => TextFieldWidget(
       onDataChanged: (text) {
         setState(() {
-          username = text;
+          userOrEmail = text;
         });
       },
-      hintText: "Kullanıcı Adı");
+      hintText: isEmailAuth ? "Email" : "Kullanıcı Adı");
 
   Widget get _textFormSifre => TextFieldWidget(
       sifregizle: sifregizle,
@@ -100,8 +189,15 @@ class _LogInViewState extends State<LogInView> {
       },
       hintText: "Şifre");
 
-  Widget get _loginButton =>
-      ButtonWidget(onPressed: Control, child: Text("Giriş Yap"));
+  Widget get _loginButton => ButtonWidget(
+      onPressed: () {
+        if (checkValidation(userOrEmail, pass)) {
+          isLoading ? null : userLogin(userOrEmail!, pass!);
+        } else {
+          null;
+        }
+      },
+      child: isLoading ? CircularProgressIndicator() : Text("Giriş Yap"));
 
   Widget get _info => SizedBox(
         width: 380,
@@ -137,13 +233,20 @@ class _LogInViewState extends State<LogInView> {
       borderSide: BorderSide(style: BorderStyle.solid, color: Colors.white));
 
   Widget get _googleButton => ButtonWidget.Icon(
-      Icon(
-        Icons.abc,
-        color: Colors.black,
-      ),
-      Text("Email ile Giriş Yap", style: TextStyle(color: Colors.black)),
-      Colors.white,
-      null);
+          Icon(
+            Icons.abc,
+            color: Colors.black,
+          ),
+          Text(
+              isEmailAuth
+                  ? "Kullanıcı Adı ile giriş yap"
+                  : "Email ile giriş yap",
+              style: TextStyle(color: Colors.black)),
+          Colors.white, () {
+        setState(() {
+          isEmailAuth = !isEmailAuth;
+        });
+      });
 
   Widget get _signUpButton => ButtonWidget.Icon(
         Icon(Icons.person_add_alt_1_outlined),

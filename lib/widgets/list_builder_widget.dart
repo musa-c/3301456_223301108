@@ -1,29 +1,17 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:abc/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:convert';
-
-import 'package:abc/models/userJson.dart';
-
-import '../models/userJson.dart';
-import '../models/userdata.dart';
 import 'list_icon_widget.dart';
-import 'package:animated_icon/animate_icons.dart';
+// import 'package:animated_icon/animate_icons.dart';
 
 class ListBuilderWidget extends StatefulWidget {
-  Widget? listAvatar;
-  User? user;
-
-  ListBuilderWidget({this.listAvatar, super.key, this.user});
+  const ListBuilderWidget({super.key});
 
   @override
   State<ListBuilderWidget> createState() => _ListBuilderWidgetState();
 }
 
 class _ListBuilderWidgetState extends State<ListBuilderWidget> {
-  User _user = User();
-
   @override
   void initState() {
     super.initState();
@@ -31,42 +19,38 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
 
   void setUpCount(String username, int index) {
     setState(() {
-      _user.setUserUpCount(username, index);
+      // _user.setUserUpCount(username, index);
     });
   }
 
   void setDownCount(String username, int index) {
     setState(() {
-      _user.setDownCount(username, index);
+      // _user.setDownCount(username, index);
     });
   }
 
   void setBookmarkerCount(String username, int index) {
     setState(() {
-      _user.setBookMarkerCount(username, index);
+      // _user.setBookMarkerCount(username, index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _user.jsonList.length,
+        itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
-          final item = _user.jsonList[index];
-          return Column(
-            children: item['text'].map<Widget>((text) {
-              return _listCont(index, text);
-            }).toList(),
-          );
+          // final item = _user.jsonList[index];
+          return _listCont();
         });
   }
 
-  Widget _listCont(index, text) => Container(
+  Widget _listCont() => Container(
       decoration: BoxDecoration(
         color: Colors.black,
         border: _listContBorder,
       ),
-      child: _listTile(index, text));
+      child: _listTile());
 
   Border get _listContBorder => const Border(
       bottom: BorderSide(
@@ -77,40 +61,40 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       right: BorderSide(width: 0),
       left: BorderSide(width: 0));
 
-  Widget _listTile(index, text) => ListTile(
+  Widget _listTile() => ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-      leading: _listAvatar(index),
-      subtitle: _listContext(index, text),
-      title: _listTitle(index));
+      leading: _listAvatar(),
+      subtitle: _listContext(),
+      title: _listTitle());
 
-  Widget _listAvatar(index) => Container(
+  Widget _listAvatar() => Container(
       height: double.infinity,
       // ignore: sized_box_for_whitespace
       margin: EdgeInsets.fromLTRB(0, 0, 0, 14),
-      child: _listAvatarChilt(index));
+      child: _listAvatarChilt());
 
-  Widget _listAvatarChilt(index) => InkWell(
+  Widget _listAvatarChilt() => InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              settings: RouteSettings(arguments: {
-                "username": _user.jsonList[index]["username"],
-                "avatar": _user.jsonList[index]['avatar']
-              }),
-              fullscreenDialog: false,
-              builder: (context) => Scaffold(
-                  appBar: AppBar(
-                    bottom: _appBarDivider,
-                    backgroundColor: Colors.black,
-                    title: Text("Profil"),
-                  ),
-                  body: ProfileView()),
-            ));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       settings: RouteSettings(arguments: {
+        //         "username": _user.jsonList[index]["username"],
+        //         "avatar": _user.jsonList[index]['avatar']
+        //       }),
+        //       fullscreenDialog: false,
+        //       builder: (context) => Scaffold(
+        //           appBar: AppBar(
+        //             bottom: _appBarDivider,
+        //             backgroundColor: Colors.black,
+        //             title: Text("Profil"),
+        //           ),
+        //           body: ProfileView()),
+        //     ));
       },
       child: CircleAvatar(
         radius: 24,
-        backgroundImage: NetworkImage(_user.jsonList[index]['avatar']),
+        // backgroundImage: NetworkImage(_user.jsonList[index]['avatar']),
       ));
 
   Widget _listCartUserName(String text) => Text(
@@ -118,11 +102,11 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         style: titleTextStyle,
       );
 
-  Widget _listContext(index, text) => Column(
+  Widget _listContext() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            text,
+            "merhaba",
             style: TextStyle(
                 color: Color.fromRGBO(255, 250, 250, 1),
                 fontSize: 14,
@@ -135,28 +119,28 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
               children: [
                 ListIconWidget(
                     icon: Icons.messenger_outline_rounded,
-                    count: _user.jsonList[index]['commentCount'],
+                    count: 12,
                     onTap: () {}),
                 ListIconWidget(
                   icon: Icons.arrow_upward_rounded,
-                  count: _user.jsonList[index]['upCount'],
+                  count: 10,
                   onTap: () {
-                    setUpCount(_user.jsonList[index]['username'], index);
+                    // setUpCount(_user.jsonList[index]['username'], index);
                   },
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_downward_rounded,
-                  count: _user.jsonList[index]['dowCount'],
+                  count: 0,
                   onTap: () {
-                    setDownCount(_user.jsonList[index]['username'], index);
+                    // setDownCount(_user.jsonList[index]['username'], index);
                   },
                 ),
                 ListIconWidget(
                   icon: Icons.bookmark_border_rounded,
-                  count: _user.jsonList[index]['bookmarkerCount'],
+                  count: 7,
                   onTap: () {
-                    setBookmarkerCount(
-                        _user.jsonList[index]['username'], index);
+                    // setBookmarkerCount(
+                    //     _user.jsonList[index]['username'], index);
                   },
                 ),
               ],
@@ -165,22 +149,25 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         ],
       );
 
-  Widget _listTitle(index) => Container(
+  Widget _listTitle() => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_listUserName(index), _listTimeStamp(index)],
+          children: [_listUserName(), _listTimeStamp()],
         ),
       );
 
-  Widget _listUserName(index) => Wrap(
+  Widget _listUserName() => Wrap(
         direction: Axis.horizontal,
         runSpacing: 3,
-        children: [
-          _listCartUserName(_user.jsonList[index]['username'].toString()),
+        children: const [
+          Text(
+            "musaasa",
+            style: TextStyle(color: Colors.amberAccent),
+          )
         ],
       );
-  Widget _listTimeStamp(index) => Text(
-        _user.jsonList[index]['timestamp'].toString(),
+  Widget _listTimeStamp() => Text(
+        "time",
         style:
             TextStyle(fontSize: 14, color: Color.fromRGBO(203, 208, 217, 1.0)),
       );

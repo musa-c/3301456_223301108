@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 
@@ -19,12 +18,12 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         height: 44,
         width: 380,
         child: TextField(
             obscureText: sifregizle ?? false,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             onChanged: (text) {
               if (onDataChanged != null) {
                 onDataChanged!(text);
@@ -40,7 +39,7 @@ class TextFieldWidget extends StatelessWidget {
 
   InputDecoration get _InputDecoration => InputDecoration(
         suffixIcon: iconButton,
-        contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+        contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
         filled: true,
         //focusedBorder: outlineInputBorder,
         focusedBorder:
@@ -48,7 +47,7 @@ class TextFieldWidget extends StatelessWidget {
         enabledBorder:
             OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey),
-        fillColor: Color.fromRGBO(60, 60, 67, 0.6),
+        hintStyle: const TextStyle(color: Colors.grey),
+        fillColor: const Color.fromRGBO(60, 60, 67, 0.6),
       );
 }
