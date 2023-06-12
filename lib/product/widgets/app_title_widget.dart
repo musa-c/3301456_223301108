@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
+import 'package:abc/product/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +21,7 @@ class AppTitleWidget extends StatelessWidget {
   }
 
   TextStyle get _TextAppTitleWidgetStyle => TextStyle(
-      color: Colors.white,
+      color: ColorConstants.whiteColor,
       fontSize: 20,
       fontStyle: FontStyle.normal,
       letterSpacing: 14);

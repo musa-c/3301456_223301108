@@ -1,17 +1,16 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
-import 'package:abc/screens/setting_screen.dart';
-import 'package:abc/widgets/list_profile_user_widget.dart';
+import 'package:abc/feature/screens/setting_screen.dart';
+import 'package:abc/product/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
 
-class ProfileView extends StatefulWidget {
-  String? username;
-  String? passw;
+import "package:abc/product/models/post_model.dart";
 
+class ProfileView extends StatefulWidget {
+  User? user = User();
   ProfileView({
     super.key,
-    this.username,
-    this.passw,
+    this.user,
   });
 
   @override
@@ -20,36 +19,25 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final String _url = "https://picsum.photos/id/237/200/300";
-  Map<dynamic, dynamic>? args;
-  String? username;
-  String? avatar;
-  String? passw;
-  // User _user = User();
+  // Map<String, dynamic>? data;
+  // User userargs = User();
 
   @override
   void initState() {
     super.initState();
   }
 
-  void userNameAndPasswSet(username, pasw) {
-    setState(() {
-      username = username;
-      passw = pasw;
-    });
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    args = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>?;
-    // username = widget.username ?? args?['username'];
-    // avatar = args?['avatar'];
-    // passw = widget.passw ?? args?['pasw'];
-    userNameAndPasswSet(username, passw);
+    // data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    // userargs = data!['user'];
+    // print("profileargs:");
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user?.avatar);
     return Container(child: _ProfileContext);
   }
 
@@ -67,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget get _ProfileSettingIcon => Container(
       margin: EdgeInsets.fromLTRB(0, 12, 12, 0),
-      child: avatar != null
+      child: widget.user?.avatar != null
           ? null
           : InkWell(
               onTap: () {
@@ -102,27 +90,65 @@ class _ProfileViewState extends State<ProfileView> {
   Widget get _ProfileAvatarWrap => Wrap(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_ProfileAvatar, _ProfileUserNameSurname],
+          children: [
+            _ProfileAvatar,
+            _ProfileUserName,
+            _ProfileFirstLastName(),
+          ],
         ),
       ]);
 
   Widget get _ProfileAvatar => CircleAvatar(
-        backgroundImage: NetworkImage(_url),
-        // UserData().getAvatar(username!) == null
-        //     ? NetworkImage(avatar ?? _url)
-        //     :
-        //     NetworkImage(UserData().getAvatar(username!)!),
+        backgroundImage:
+            widget.user?.avatar == "" || widget.user?.avatar == null
+                ? NetworkImage(_url)
+                : null,
         radius: 40,
       );
 
-  Widget get _ProfileUserNameSurname => Container(
+  Widget get _ProfileUserName => Container(
         margin: EdgeInsets.all(20),
         child: Text(
-          "musac",
+          widget.user!.userName!,
           style: TextStyle(
               fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       );
+
+  Widget _ProfileFirstLastName() {
+    if (widget.user?.firstName != null && widget.user?.lastName != null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(widget.user!.firstName!,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+              Text(widget.user!.lastName!,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white))
+            ],
+          )
+        ],
+      );
+    } else if (widget.user?.firstName != null) {
+      return Text(widget.user!.firstName!,
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white));
+    } else if (widget.user?.lastName != null) {
+      return Text(widget.user!.firstName!,
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white));
+    } else {
+      return Container();
+    }
+  }
 
   // Widget get _ProfileUserName => Text(
   //       "şifre:" + passw!,

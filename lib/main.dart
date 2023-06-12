@@ -1,11 +1,10 @@
 import 'package:abc/Login/log_in_view.dart';
-import 'package:abc/screens/chats_screen.dart';
-import 'package:abc/screens/profile_screen.dart';
+import 'package:abc/feature/screens/chats_screen.dart';
+import 'package:abc/feature/screens/profile_screen.dart';
 
 import 'package:flutter/material.dart';
 
 import 'Login/sign_up_view.dart';
-import '/tabBar_view.dart';
 
 void main() {
   runApp(const MainApp());

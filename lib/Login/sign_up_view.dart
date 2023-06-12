@@ -6,9 +6,9 @@
 
 import 'dart:convert';
 
-import 'package:abc/widgets/app_title_widget.dart';
-import 'package:abc/widgets/button_widget.dart';
-import 'package:abc/widgets/text_field_widget.dart';
+import 'package:abc/product/widgets/app_title_widget.dart';
+import 'package:abc/product/widgets/button_widget.dart';
+import 'package:abc/product/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

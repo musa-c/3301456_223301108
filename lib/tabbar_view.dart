@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:abc/screens/chats_screen.dart';
+import 'package:abc/feature/screens/chats_screen.dart';
+import 'package:abc/feature/screens/home_screen.dart';
+import 'package:abc/feature/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'screens/home_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/search_screen.dart';
+import '../../product/models/post_model.dart';
+import '../../feature/screens/profile_screen.dart';
 
 class TabBarViewAbc extends StatefulWidget {
   const TabBarViewAbc({super.key});
@@ -20,11 +21,20 @@ class TabBarViewAbc extends StatefulWidget {
 class _TabBarViewAbcState extends State<TabBarViewAbc> {
   String? username;
   String? passw;
+  User user = User();
 
   final String _url = "https://picsum.photos/id/237/200/300";
   int _selectedTabIndex = 0;
+  Map<String, dynamic>? data;
 
-  final List<Widget> _pages = [HomeView(), SearchView()];
+  // ignore: prefer_final_fields
+  late List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  }
 
   _onTabTapped(int index) {
     setState(() {
@@ -34,10 +44,14 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
 
   @override
   Widget build(BuildContext context) {
-    // var data = [];
-    // data = ModalRoute.of(context)?.settings.arguments as List;
-    // username = data[0];
-    // passw = data[1];
+    data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    user = data!['user'];
+
+    _pages = [HomeView(user: user), SearchView(user: user)];
+    // user = data!['user'];
+    // data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    // print(data['user']);
+    // User.fromJson(data!);
 
     return MaterialApp(
       home: Scaffold(
@@ -72,16 +86,7 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
   }
 
   Widget _getPageProfile() {
-    return ProfileView(
-      username: "username",
-      passw: "passw",
-      // onDataChanged: (newDatUser, newDataPassw) {
-      //   setState(() {
-      //     username = newDatUser;
-      //     passw = newDataPassw;
-      //   });
-      // },
-    );
+    return ProfileView(user: user);
   }
 
   PreferredSizeWidget _appBar(index, username, pasw) => AppBar(
@@ -103,16 +108,16 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      fullscreenDialog: false,
-                      builder: (context) => Scaffold(
-                          appBar: AppBar(
-                            bottom: _appBarDivider,
-                            backgroundColor: Colors.black,
-                            title: Text("Profil"),
-                          ),
-                          body: ProfileView()),
-                      settings: RouteSettings(
-                          arguments: {"username": username, "pasw": pasw})));
+                    fullscreenDialog: false,
+                    builder: (context) => Scaffold(
+                        appBar: AppBar(
+                          bottom: _appBarDivider,
+                          backgroundColor: Colors.black,
+                          title: Text("Profil"),
+                        ),
+                        body: ProfileView(user: user)),
+                    // settings: RouteSettings(arguments: {"user": user})
+                  ));
               // Navigator.pushNamed(context, "profile",
               //     arguments: {"username": username, "pasw": pasw});
             },

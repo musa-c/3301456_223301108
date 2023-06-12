@@ -1,9 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
+import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 
 class ListCardUserWidget extends StatefulWidget {
-  const ListCardUserWidget({super.key});
+  User user = User();
+  ListCardUserWidget({super.key, required this.user});
 
   @override
   State<ListCardUserWidget> createState() => _ListCardUserWidgetState();

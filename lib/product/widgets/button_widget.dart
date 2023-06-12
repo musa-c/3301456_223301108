@@ -1,3 +1,4 @@
+import 'package:abc/product/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 // loginButton
@@ -19,7 +20,7 @@ class ButtonWidget extends StatelessWidget {
       height: 44,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple[300],
+            backgroundColor: ColorConstants.purpleColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12))),
         onPressed: () {
