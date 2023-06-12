@@ -5,9 +5,15 @@ class ListIconWidget extends StatefulWidget {
   Color? color;
   int? count;
   Function? onTap;
+  Function? onTapUser;
 
   ListIconWidget(
-      {required this.icon, super.key, this.color, this.count, this.onTap});
+      {required this.icon,
+      super.key,
+      this.color,
+      this.count,
+      this.onTap,
+      this.onTapUser});
 
   @override
   State<ListIconWidget> createState() => ListIconWidgetState();
@@ -16,17 +22,20 @@ class ListIconWidget extends StatefulWidget {
 class ListIconWidgetState extends State<ListIconWidget> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => widget.onTap!() ?? () {},
-      child: Wrap(spacing: 5, children: [
-        Icon(
+    return Wrap(spacing: 5, children: [
+      InkWell(
+        onTap: () => widget.onTap!() ?? () {},
+        child: Icon(
           widget.icon,
           color: widget.color ?? _footerColor,
           size: 14,
         ),
-        _listIconText
-      ]),
-    );
+      ),
+      InkWell(
+        onTap: () => widget.onTapUser!() ?? () {},
+        child: _listIconText,
+      )
+    ]);
   }
 
   Color get _footerColor => const Color.fromRGBO(85, 90, 100, 1.0);

@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:abc/product/constants/color_constants.dart';
 import 'package:abc/product/models/post_model.dart';
+import 'package:abc/product/widgets/list_card_bookmarkusers_widget.dart';
+import 'package:abc/product/widgets/list_card_dislikeusers_widget.dart';
+import 'package:abc/product/widgets/list_card_likeusers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -157,7 +160,10 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                     backgroundColor: Colors.black,
                     title: Text("Profil"),
                   ),
-                  body: ProfileView(user: user)),
+                  body: ProfileView(
+                    user: user,
+                    myuser: widget.user,
+                  )),
             ));
       },
       child: CircleAvatar(
@@ -169,6 +175,29 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         username,
         style: titleTextStyle,
       );
+
+  void Modal(int postId, String opr, Widget List) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              title: Text(opr),
+              backgroundColor: ColorConstants.blackColor,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pop(); // Geri dönüş butonuna basıldığında dialog kapatılıyor
+                },
+              ),
+            ),
+            body: List);
+      },
+    );
+  }
 
   Widget _listContext(Post post) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,6 +227,15 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                   onTap: () {
                     setLike(post.id!);
                   },
+                  onTapUser: () {
+                    Modal(
+                        post.id!,
+                        "Beğenenler",
+                        ListCardLikeUsers(
+                          postId: post.id!,
+                          myuser: widget.user,
+                        ));
+                  },
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_downward_rounded,
@@ -208,6 +246,17 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                   onTap: () {
                     setDislike(post.id!);
                   },
+                  onTapUser: () {
+                    post.dislikeCount != 0
+                        ? Modal(
+                            post.id!,
+                            "Beğenmeyenler",
+                            ListCardDislikeUsers(
+                              postId: post.id!,
+                              myuser: widget.user,
+                            ))
+                        : null;
+                  },
                 ),
                 ListIconWidget(
                   icon: Icons.bookmark_border_rounded,
@@ -217,6 +266,17 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                       : ColorConstants.primaryGreyColor,
                   onTap: () {
                     setBookMark(post.id!);
+                  },
+                  onTapUser: () {
+                    post.bookMarkCount != 0
+                        ? Modal(
+                            post.id!,
+                            "Kaydedenler",
+                            ListCardBookMarkUsers(
+                              postId: post.id!,
+                              myuser: widget.user,
+                            ))
+                        : null;
                   },
                 ),
               ],

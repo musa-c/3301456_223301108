@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print
 
+import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'list_icon_widget.dart';
 
 class ListProfileWidget extends StatefulWidget {
-  const ListProfileWidget({super.key});
+  User? user;
+  User? myuser;
+  ListProfileWidget({super.key, this.myuser, this.user});
 
   @override
   State<ListProfileWidget> createState() => _ListProfileWidgetState();
@@ -21,31 +24,31 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
     super.initState();
   }
 
-  // String time() => {
-  //   DateTime now = DateTime.now();
-  //   String formattedTime = DateFormat('kk:mm:ss').format(now);
-  //   return formattedTime.toString();
-  // };
+  void createPost() async {
+    final http.Response response;
+    try {
+      response = await http.post(Uri.parse(
+          'http://localhost:26342/api/posts/CreatePost/${widget.myuser!.id}'));
+      if (response.statusCode == 200) {
+      } else {
+        print("hata");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // if (userData.any((element) => element['username'] == widget.username)) {
-    //   print(userData);
     return Scaffold(
         backgroundColor: Colors.black,
         resizeToAvoidBottomInset: true,
-        // floatingActionButton:
-        //     widget.avatar != null ? null : _floatingActionButton,
+        floatingActionButton: widget.user?.id == null
+            ? null
+            : widget.user?.id == widget.myuser!.id
+                ? _floatingActionButton
+                : null,
         body: _listViewBuilder);
-    // } else {
-    //   return Scaffold(
-    //     resizeToAvoidBottomInset: true,
-    //     backgroundColor: Colors.black,
-    //     floatingActionButton:
-    //         widget.avatar != null ? null : _floatingActionButton,
-    //     body: _text,
-    //   );
-    // }
   }
 
   Widget get _text => Center(

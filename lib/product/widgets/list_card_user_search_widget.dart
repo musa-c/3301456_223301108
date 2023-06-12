@@ -1,19 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../feature/screens/profile_screen.dart';
 import '../models/post_model.dart';
+import 'package:http/http.dart' as http;
 
-class ListCardUserWidget extends StatefulWidget {
-  List<Post>? users;
-  User? myuser;
-  ListCardUserWidget({super.key, this.users, this.myuser});
+class ListCardUserSearch extends StatefulWidget {
+  User myuser = User();
+
+  ListCardUserSearch({super.key, required this.myuser});
 
   @override
-  State<ListCardUserWidget> createState() => _ListCardUserWidgetState();
+  State<ListCardUserSearch> createState() => _ListCardUserSearchState();
 }
 
-class _ListCardUserWidgetState extends State<ListCardUserWidget> {
+class _ListCardUserSearchState extends State<ListCardUserSearch> {
   final String _url = "https://picsum.photos/id/237/200/300";
+  List<User>? users = [];
+
+  void getUser() async {
+    final response =
+        await http.get(Uri.parse('http://localhost:26342/api/users'));
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<User> postList =
+          jsonResponse.map((item) => User.fromJson(item)).toList();
+      setState(() {
+        users = postList;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,42 +44,42 @@ class _ListCardUserWidgetState extends State<ListCardUserWidget> {
   }
 
   Widget get _ListViewBuilder => ListView.builder(
-        itemCount: widget.users!.length,
+        itemCount: users!.length,
         itemBuilder: (context, index) {
-          Post post = widget.users![index];
-          return _card(post);
+          User user = users![index];
+          return user.id != widget.myuser.id ? _card(user) : Container();
         },
       );
 
-  Widget _card(Post post) => Card(
+  Widget _card(User user) => Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0.0),
       ),
       margin: const EdgeInsets.all(0),
-      child: _CardChild(post));
+      child: _CardChild(user));
 
-  Widget _CardChild(Post post) => Container(
+  Widget _CardChild(User user) => Container(
         color: Colors.black,
         // padding: EdgeInsets.all(5),
         child: Column(
-          children: _childeren(post),
+          children: _childeren(user),
         ),
       );
 
-  List<Widget> _childeren(Post post) => [
-        _ListTile(post),
+  List<Widget> _childeren(User user) => [
+        _ListTile(user),
         const Divider(
           height: 1,
           color: Colors.grey,
         )
       ];
 
-  Widget _ListTile(Post post) => ListTile(
-      leading: _ListTileLeading(post),
-      title: _ListTileTitle(post),
-      subtitle: _ListTileSubTitle(post));
+  Widget _ListTile(User user) => ListTile(
+      leading: _ListTileLeading(user),
+      title: _ListTileTitle(user),
+      subtitle: _ListTileSubTitle(user));
 
-  Widget _ListTileLeading(Post post) => InkWell(
+  Widget _ListTileLeading(User user) => InkWell(
       onTap: () {
         Navigator.push(
             context,
@@ -73,7 +96,7 @@ class _ListCardUserWidgetState extends State<ListCardUserWidget> {
                     title: const Text("Profil"),
                   ),
                   body: ProfileView(
-                    user: post.user,
+                    user: user,
                     myuser: widget.myuser,
                   )),
             ));
@@ -83,14 +106,14 @@ class _ListCardUserWidgetState extends State<ListCardUserWidget> {
         backgroundImage: NetworkImage(_url),
       ));
 
-  Widget _ListTileTitle(Post post) => Text(
-        post.user!.userName!,
+  Widget _ListTileTitle(User user) => Text(
+        user.userName!,
         style: const TextStyle(
             fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white),
       );
 
-  Widget _ListTileSubTitle(Post post) => Text(
-        post.user?.firstName ?? "",
+  Widget _ListTileSubTitle(User user) => Text(
+        user.firstName ?? "",
         // post.user?.lastName ?? "",
 
         // "@${_user.jsonList[index]['username']}",

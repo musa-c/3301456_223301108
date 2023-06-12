@@ -8,10 +8,8 @@ import "package:abc/product/models/post_model.dart";
 
 class ProfileView extends StatefulWidget {
   User? user = User();
-  ProfileView({
-    super.key,
-    this.user,
-  });
+  User? myuser = User();
+  ProfileView({super.key, this.user, this.myuser});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -158,7 +156,8 @@ class _ProfileViewState extends State<ProfileView> {
   Widget get _ListViewExpanded => Expanded(
       flex: 2, child: SizedBox(width: double.infinity, child: _ListView));
 
-  Widget get _ListView => ListProfileWidget();
+  Widget get _ListView =>
+      ListProfileWidget(myuser: widget.myuser, user: widget.user);
 
   PreferredSize get _appBarDivider => PreferredSize(
         preferredSize: Size.fromHeight(1.0),

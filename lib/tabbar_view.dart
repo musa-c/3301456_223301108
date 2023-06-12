@@ -86,7 +86,7 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
   }
 
   Widget _getPageProfile() {
-    return ProfileView(user: user);
+    return ProfileView(myuser: user, user: user);
   }
 
   PreferredSizeWidget _appBar(index, username, pasw) => AppBar(
@@ -115,7 +115,7 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
                           backgroundColor: Colors.black,
                           title: Text("Profil"),
                         ),
-                        body: ProfileView(user: user)),
+                        body: ProfileView(myuser: user, user: user)),
                     // settings: RouteSettings(arguments: {"user": user})
                   ));
               // Navigator.pushNamed(context, "profile",

@@ -3,7 +3,7 @@
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../product/widgets/list_card_user_widget.dart';
+import '../../product/widgets/list_card_user_search_widget.dart';
 
 class SearchView extends StatefulWidget {
   User user = User();
@@ -19,7 +19,7 @@ class _SearchViewState extends State<SearchView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
-      body: ListCardUserWidget(user: widget.user),
+      body: ListCardUserSearch(myuser: widget.user),
     );
   }
 }
