@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print
 
+import 'dart:convert';
+
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'button_widget.dart';
 import 'list_icon_widget.dart';
 
 class ListProfileWidget extends StatefulWidget {
@@ -17,21 +21,50 @@ class ListProfileWidget extends StatefulWidget {
 class _ListProfileWidgetState extends State<ListProfileWidget> {
   final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
+  List<Post>? posts = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    getPost();
   }
 
-  void createPost() async {
+  String textvalue = "";
+
+  void createPost(String text) async {
     final http.Response response;
     try {
-      response = await http.post(Uri.parse(
-          'http://localhost:26342/api/posts/CreatePost/${widget.myuser!.id}'));
+      response = await http.post(
+          Uri.parse(
+              'http://localhost:26342/api/posts/CreatePost/${widget.myuser!.id}'),
+          body: jsonEncode({'text': text}),
+          headers: {'Content-Type': 'application/json'});
       if (response.statusCode == 200) {
+        print("başarılı");
+        getPost();
       } else {
-        print("hata");
+        print("başarısız.");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void getPost() async {
+    final http.Response response;
+    try {
+      response = await http.get(Uri.parse(
+          'http://localhost:26342/api/posts/GetPostByUserId/${widget.myuser!.id}'));
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = jsonDecode(response.body);
+        List<Post> postList =
+            jsonResponse.map((item) => Post.fromJson(item)).toList();
+        print("başarılı");
+        setState(() {
+          posts = postList;
+        });
+      } else {
+        print("başarısız.");
       }
     } catch (e) {
       print(e);
@@ -117,36 +150,40 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                         // Geçerlilik denetimi yapılabilir
                         return null;
                       },
-                      // onChanged: (value) {
-                      //   setState(() {
-                      //     _textData = value;
-                      //   });
-                      //   // Metin değiştiğinde yapılacak işlemler
-                      // },
+                      onChanged: (value) {
+                        setState(() {
+                          textvalue = value;
+                        });
+                        // Metin değiştiğinde yapılacak işlemler
+                      },
                     ),
                   ),
-                  // ButtonWidget(
-                  //     onPressed: () {
-                  //       userDataAdd();
-                  //     },
-                  //     child: Text("Gönder gitsin"))
+                  ButtonWidget(
+                      onPressed: () {
+                        createPost(textvalue);
+                      },
+                      child: Text("Gönder gitsin"))
                 ],
               ));
         },
       );
 
   Widget get _listViewBuilder => ListView.builder(
-      itemCount: 1,
+      itemCount: posts!.length,
       itemBuilder: (context, index) {
-        return _listCont();
+        Post post = posts![index];
+        DateTime dateTime = DateTime.parse(post.timeStamp!);
+        String formattedDateTime =
+            DateFormat('dd.MM.yyyy HH:mm').format(dateTime);
+        return _listCont(post, formattedDateTime);
       });
 
-  Widget _listCont() => Container(
+  Widget _listCont(Post post, String formattedDateTime) => Container(
       decoration: BoxDecoration(
         color: Colors.black,
         border: _listContBorder,
       ),
-      child: _listTile());
+      child: _listTile(post, formattedDateTime));
 
   Border get _listContBorder => const Border(
       bottom: BorderSide(
@@ -157,11 +194,11 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       right: BorderSide(width: 0),
       left: BorderSide(width: 0));
 
-  Widget _listTile() => ListTile(
+  Widget _listTile(Post post, String formattedDateTime) => ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
       leading: _listAvatar(),
-      subtitle: _listContext(),
-      title: _listTitle());
+      subtitle: _listContext(post),
+      title: _listTitle(widget.myuser!.userName!, formattedDateTime));
 
   Widget _listAvatar() => Container(
       height: double.infinity,
@@ -181,11 +218,11 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         style: titleTextStyle,
       );
 
-  Widget _listContext() => Column(
+  Widget _listContext(Post post) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "deneme post",
+            post.text!,
             textAlign: TextAlign.start,
             style: TextStyle(
                 color: Color.fromRGBO(255, 250, 250, 1),
@@ -199,22 +236,22 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
               children: [
                 ListIconWidget(
                   icon: Icons.messenger_outline_rounded,
-                  count: 4,
+                  count: post.commentCount,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_upward_rounded,
-                  count: 3,
+                  count: post.likeCount,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.arrow_downward_rounded,
-                  count: 2,
+                  count: post.dislikeCount,
                   onTap: () {},
                 ),
                 ListIconWidget(
                   icon: Icons.bookmark_border_rounded,
-                  count: 1,
+                  count: post.bookMarkCount,
                   onTap: () {},
                 ),
               ],
@@ -223,25 +260,28 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         ],
       );
 
-  Widget _listTitle() => Container(
+  Widget _listTitle(String username, String formattedDateTime) => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_listUserName(), _listTimeStamp()],
+          children: [
+            _listUserName(username),
+            _listTimeStamp(formattedDateTime)
+          ],
         ),
       );
 
-  Widget _listUserName() => Wrap(
+  Widget _listUserName(String username) => Wrap(
         direction: Axis.horizontal,
         runSpacing: 3,
         children: [
           Text(
-            "username",
+            username,
             style: TextStyle(color: Colors.amber),
           ),
         ],
       );
-  Widget _listTimeStamp() => Text(
-        "time",
+  Widget _listTimeStamp(String formattedDateTime) => Text(
+        formattedDateTime,
         style:
             TextStyle(fontSize: 14, color: Color.fromRGBO(203, 208, 217, 1.0)),
       );
