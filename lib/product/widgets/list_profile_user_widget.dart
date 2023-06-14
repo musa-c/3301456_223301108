@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print
 
+import 'dart:async';
 import 'dart:convert';
-
+import 'package:abc/product/constants/color_constants.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'button_widget.dart';
 import 'list_icon_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ListProfileWidget extends StatefulWidget {
   User? user;
@@ -22,6 +24,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
   List<Post>? posts = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,7 +34,10 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
 
   String textvalue = "";
 
-  void createPost(String text) async {
+  void createPost(String text, BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     final http.Response response;
     try {
       response = await http.post(
@@ -40,10 +46,26 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
           body: jsonEncode({'text': text}),
           headers: {'Content-Type': 'application/json'});
       if (response.statusCode == 200) {
-        print("başarılı");
+        setState(() {
+          isLoading = true;
+        });
         getPost();
+        // ignore: use_build_context_synchronously
+        Fluttertoast.showToast(
+          msg: "☑️ bir ses çıkartıldı.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          backgroundColor: ColorConstants.greyColor,
+          textColor: ColorConstants.whiteColor,
+          webPosition: "center",
+          webBgColor: "#808080",
+          fontSize: 16.0,
+        );
       } else {
-        print("başarısız.");
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       print(e);
@@ -59,7 +81,6 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         List<dynamic> jsonResponse = jsonDecode(response.body);
         List<Post> postList =
             jsonResponse.map((item) => Post.fromJson(item)).toList();
-        print("başarılı");
         setState(() {
           posts = postList;
         });
@@ -160,9 +181,11 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                   ),
                   ButtonWidget(
                       onPressed: () {
-                        createPost(textvalue);
+                        createPost(textvalue, context);
                       },
-                      child: Text("Gönder gitsin"))
+                      child: isLoading
+                          ? CircularProgressIndicator()
+                          : Text("Gönder gitsin"))
                 ],
               ));
         },
