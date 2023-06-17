@@ -21,7 +21,7 @@ class _ListCardBookMarkUsersState extends State<ListCardBookMarkUsers> {
 
   void getLikeUsers() async {
     final response = await http.get(Uri.parse(
-        'http://localhost:26342/api/bookmarkers/GetUserBookMarkByPostId/${widget.postId}'));
+        'http://192.168.1.6:45455/api/bookmarkers/GetUserBookMarkByPostId/${widget.postId}'));
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Post> postList =

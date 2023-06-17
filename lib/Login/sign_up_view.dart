@@ -80,7 +80,7 @@ class _SignUpViewState extends State<SignUpView> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:26342/api/users/createUser'),
+        Uri.parse('http://192.168.1.6:45455/api/users/createUser'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

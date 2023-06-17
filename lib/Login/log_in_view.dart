@@ -3,7 +3,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-
 import 'package:abc/Login/sign_up_view.dart';
 import 'package:abc/product/widgets/app_title_widget.dart';
 import 'package:abc/product/widgets/button_widget.dart';
@@ -39,10 +38,10 @@ class _LogInViewState extends State<LogInView> {
     try {
       if (isEmailAuth) {
         response = await http.get(Uri.parse(
-            'http://localhost:26342/api/users/emailorPasswordCheck/$userOrEmail/$password'));
+            'https://192.168.1.6:45455/api/users/emailorPasswordCheck/$userOrEmail/$password'));
       } else {
         response = await http.get(Uri.parse(
-            'http://localhost:26342/api/users/usernameOrPasswordCheck/$userOrEmail/$password'));
+            'https://192.168.1.6:45455/api/users/usernameOrPasswordCheck/$userOrEmail/$password'));
       }
 
       if (response.statusCode == 200) {
@@ -84,6 +83,12 @@ class _LogInViewState extends State<LogInView> {
         });
 
         // Handle other status codes if needed
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        print(response.statusCode);
+        print("başarısız");
       }
     } catch (e) {
       setState(() {

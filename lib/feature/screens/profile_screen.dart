@@ -53,7 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget get _ProfileSettingIcon => Container(
       margin: EdgeInsets.fromLTRB(0, 12, 12, 0),
-      child: widget.user?.avatar != null
+      child: widget.myuser!.id != widget.user!.id
           ? null
           : InkWell(
               onTap: () {
@@ -105,7 +105,7 @@ class _ProfileViewState extends State<ProfileView> {
       );
 
   Widget get _ProfileUserName => Container(
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(10),
         child: Text(
           widget.user!.userName!,
           style: TextStyle(
@@ -147,11 +147,6 @@ class _ProfileViewState extends State<ProfileView> {
       return Container();
     }
   }
-
-  // Widget get _ProfileUserName => Text(
-  //       "şifre:" + passw!,
-  //       style: TextStyle(color: Colors.white),
-  //     );
 
   Widget get _ListViewExpanded => Expanded(
       flex: 2, child: SizedBox(width: double.infinity, child: _ListView));

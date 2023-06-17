@@ -21,7 +21,7 @@ class _ListCardUserSearchState extends State<ListCardUserSearch> {
 
   void getUser() async {
     final response =
-        await http.get(Uri.parse('http://localhost:26342/api/users'));
+        await http.get(Uri.parse('http://192.168.1.6:45455/api/users'));
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<User> postList =

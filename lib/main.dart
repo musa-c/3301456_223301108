@@ -3,10 +3,20 @@ import 'package:abc/feature/screens/chats_screen.dart';
 import 'package:abc/feature/screens/profile_screen.dart';
 
 import 'package:flutter/material.dart';
-
+import 'dart:io';
 import 'Login/sign_up_view.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MainApp());
 }
 

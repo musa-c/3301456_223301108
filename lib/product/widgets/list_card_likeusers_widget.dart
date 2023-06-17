@@ -20,7 +20,7 @@ class _ListCardLikeUsersState extends State<ListCardLikeUsers> {
 
   void getLikeUsers() async {
     final response = await http.get(Uri.parse(
-        'http://localhost:26342/api/likes/GetUserLikesByPostId/${widget.postId}'));
+        'http://192.168.1.6:45455/api/likes/GetUserLikesByPostId/${widget.postId}'));
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Post> postList =

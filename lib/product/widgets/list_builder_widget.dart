@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:abc/feature/screens/profile_screen.dart';
 import 'package:abc/product/constants/color_constants.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:abc/product/widgets/list_card_bookmarkusers_widget.dart';
@@ -7,7 +8,6 @@ import 'package:abc/product/widgets/list_card_likeusers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../feature/screens/profile_screen.dart';
 import 'list_icon_widget.dart';
 // import 'package:animated_icon/animate_icons.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +50,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     final http.Response response;
     try {
       response = await http.post(Uri.parse(
-          'http://localhost:26342/api/likes/CreateLike/$userId/$postId'));
+          'http://192.168.1.6:45455/api/likes/CreateLike/$userId/$postId'));
       if (response.statusCode == 200 || response.statusCode == 204) {
         getUser();
       } else {
@@ -66,7 +66,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     final http.Response response;
     try {
       response = await http.post(Uri.parse(
-          'http://localhost:26342/api/dislikes/CreateDislike/$userId/$postId'));
+          'http://192.168.1.6:45455/api/dislikes/CreateDislike/$userId/$postId'));
       if (response.statusCode == 200 || response.statusCode == 204) {
         getUser();
       } else {
@@ -82,7 +82,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     final http.Response response;
     try {
       response = await http.post(Uri.parse(
-          'http://localhost:26342/api/bookmarkers/CreateBookMark/$userId/$postId'));
+          'http://192.168.1.6:45455/api/bookmarkers/CreateBookMark/$userId/$postId'));
       if (response.statusCode == 200 || response.statusCode == 204) {
         getUser();
       } else {
@@ -95,7 +95,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
 
   void getUser() async {
     final response =
-        await http.get(Uri.parse('http://localhost:26342/api/posts'));
+        await http.get(Uri.parse('http://192.168.1.6:45455/api/posts'));
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Post> postList =
