@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:abc/feature/screens/profile_screen.dart';
 import 'package:abc/product/constants/color_constants.dart';
+import 'package:abc/product/controllers/concrete/likes_controller.dart';
+import 'package:abc/product/controllers/concrete/post_controller.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:abc/product/widgets/list_card_bookmarkusers_widget.dart';
 import 'package:abc/product/widgets/list_card_dislikeusers_widget.dart';
@@ -11,7 +13,6 @@ import 'package:intl/intl.dart';
 import 'list_icon_widget.dart';
 // import 'package:animated_icon/animate_icons.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ListBuilderWidget extends StatefulWidget {
   User user = User();
@@ -27,7 +28,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   @override
   void initState() {
     super.initState();
-    getUser();
+    getPost();
   }
 
   bool isUserIdLike(List<Likes>? likesList) {
@@ -48,12 +49,14 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   void setLike(int postId) async {
     int userId = widget.user.id!;
     final http.Response response;
+    LikeController likeController = LikeController();
     try {
-      response = await http.post(Uri.parse(
-          'http://192.168.1.6:45455/api/likes/CreateLike/$userId/$postId'));
+      response = await likeController.createLike(userId, postId);
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getUser();
+        getPost();
       } else {
+        print(response.statusCode);
+        print(response.body);
         print("hata");
       }
     } catch (e) {
@@ -68,7 +71,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       response = await http.post(Uri.parse(
           'http://192.168.1.6:45455/api/dislikes/CreateDislike/$userId/$postId'));
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getUser();
+        getPost();
       } else {
         print("hata");
       }
@@ -84,7 +87,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       response = await http.post(Uri.parse(
           'http://192.168.1.6:45455/api/bookmarkers/CreateBookMark/$userId/$postId'));
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getUser();
+        getPost();
       } else {
         print("hata");
       }
@@ -93,16 +96,15 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     }
   }
 
-  void getUser() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.6:45455/api/posts'));
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<Post> postList =
-          jsonResponse.map((item) => Post.fromJson(item)).toList();
+  void getPost() async {
+    PostController postController = PostController();
+    try {
+      List<Post> postList = await postController.getAll();
       setState(() {
         posts = postList;
       });
+    } catch (e) {
+      print("hata:  $e");
     }
   }
 

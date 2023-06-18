@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, avoid_print
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:abc/product/constants/color_constants.dart';
+import 'package:abc/product/controllers/concrete/post_controller.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +23,7 @@ class ListProfileWidget extends StatefulWidget {
 class _ListProfileWidgetState extends State<ListProfileWidget> {
   final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
+  PostController postController = PostController();
   List<Post>? posts = [];
   bool isLoading = false;
 
@@ -41,11 +42,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
     });
     final http.Response response;
     try {
-      response = await http.post(
-          Uri.parse(
-              'http://192.168.1.6:45455/api/posts/CreatePost/${widget.myuser!.id}'),
-          body: jsonEncode({'text': text}),
-          headers: {'Content-Type': 'application/json'});
+      response = await postController.createPost(widget.myuser!.id!, text);
       if (response.statusCode == 200) {
         setState(() {
           isLoading = false;
@@ -53,12 +50,12 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         getPost();
         // ignore: use_build_context_synchronously
         Fluttertoast.showToast(
-          msg: "☑️ bir ses çıkartıldı.",
+          msg: "Bir ses çıkartıldı.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 2,
-          backgroundColor: ColorConstants.greyColor,
-          textColor: ColorConstants.whiteColor,
+          backgroundColor: ColorConstants.blackColor,
+          textColor: ColorConstants.purpleColor,
           webPosition: "center",
           webBgColor: "#808080",
           fontSize: 16.0,
@@ -74,20 +71,12 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   }
 
   void getPost() async {
-    final http.Response response;
     try {
-      response = await http.get(Uri.parse(
-          'http://192.168.1.6:45455/api/posts/GetPostByUserId/${widget.user?.id == null ? widget.myuser!.id : widget.user!.id}'));
-      if (response.statusCode == 200) {
-        List<dynamic> jsonResponse = jsonDecode(response.body);
-        List<Post> postList =
-            jsonResponse.map((item) => Post.fromJson(item)).toList();
-        setState(() {
-          posts = postList;
-        });
-      } else {
-        print("başarısız.");
-      }
+      List<Post> postList = await postController.getPostByUserId(
+          widget.user?.id == null ? widget.myuser!.id! : widget.user!.id!);
+      setState(() {
+        posts = postList;
+      });
     } catch (e) {
       print(e);
     }
@@ -96,8 +85,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   void deletePost(int postId) async {
     final http.Response response;
     try {
-      response = await http.delete(
-          Uri.parse('http://192.168.1.6:45455/api/posts/delete/$postId'));
+      response = await postController.deletePost(postId);
       if (response.statusCode == 200) {
         getPost();
       } else {
@@ -112,13 +100,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
     final http.Response response;
     try {
       if (updateText != post.text && updateText != "") {
-        response = await http.put(
-            Uri.parse(
-                'http://192.168.1.6:45455/api/posts/updatePost/${post.id}'),
-            headers: <String, String>{
-              'Content-Type': 'application/json;charset=UTF-8',
-            },
-            body: jsonEncode(updateText));
+        response = await postController.updatePost(post.id!, updateText);
         if (response.statusCode == 200) {
           getPost();
           Fluttertoast.showToast(

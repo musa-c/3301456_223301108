@@ -1,8 +1,6 @@
-import 'dart:convert';
-
+import 'package:abc/product/controllers/concrete/likes_controller.dart';
 import 'package:abc/product/widgets/list_card_user_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/post_model.dart';
 
@@ -19,15 +17,15 @@ class _ListCardLikeUsersState extends State<ListCardLikeUsers> {
   List<Post>? posts = [];
 
   void getLikeUsers() async {
-    final response = await http.get(Uri.parse(
-        'http://192.168.1.6:45455/api/likes/GetUserLikesByPostId/${widget.postId}'));
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+    LikeController likeController = LikeController();
+    try {
       List<Post> postList =
-          jsonResponse.map((item) => Post.fromJson(item)).toList();
+          await likeController.getUserLikesByPostId(widget.postId);
       setState(() {
         posts = postList;
       });
+    } catch (e) {
+      print(e);
     }
   }
 

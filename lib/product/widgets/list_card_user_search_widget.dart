@@ -1,10 +1,8 @@
-import 'dart:convert';
-
+import 'package:abc/product/controllers/concrete/user_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../feature/screens/profile_screen.dart';
 import '../models/post_model.dart';
-import 'package:http/http.dart' as http;
 
 class ListCardUserSearch extends StatefulWidget {
   User myuser = User();
@@ -20,15 +18,14 @@ class _ListCardUserSearchState extends State<ListCardUserSearch> {
   List<User>? users = [];
 
   void getUser() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.6:45455/api/users'));
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<User> postList =
-          jsonResponse.map((item) => User.fromJson(item)).toList();
+    UserController userContoroller = UserController();
+    try {
+      List<User> usersList = await userContoroller.getAll();
       setState(() {
-        users = postList;
+        users = usersList;
       });
+    } catch (e) {
+      print('Hata: $e');
     }
   }
 

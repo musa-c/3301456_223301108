@@ -1,10 +1,10 @@
-import 'package:abc/Login/log_in_view.dart';
+import 'package:abc/feature/login/log_in_view.dart';
 import 'package:abc/feature/screens/chats_screen.dart';
 import 'package:abc/feature/screens/profile_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'Login/sign_up_view.dart';
+import 'feature/login/sign_up_view.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
