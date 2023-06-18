@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:abc/feature/screens/profile_screen.dart';
 import 'package:abc/product/constants/color_constants.dart';
+import 'package:abc/product/controllers/concrete/bookmark_controller.dart';
 import 'package:abc/product/controllers/concrete/dislike_controller.dart';
 import 'package:abc/product/controllers/concrete/likes_controller.dart';
 import 'package:abc/product/controllers/concrete/post_controller.dart';
@@ -85,9 +86,9 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   void setBookMark(int postId) async {
     int userId = widget.user.id!;
     final http.Response response;
+    BookMarkController bookMarkController = BookMarkController();
     try {
-      response = await http.post(Uri.parse(
-          'http://192.168.1.6:45455/api/bookmarkers/CreateBookMark/$userId/$postId'));
+      response = await bookMarkController.createBookMark(userId, postId);
       if (response.statusCode == 200 || response.statusCode == 204) {
         getPost();
       } else {

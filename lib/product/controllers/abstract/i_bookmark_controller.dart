@@ -1,6 +1,6 @@
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 abstract class IBookMarkController {
-  http.Response createBookMark(int userId, int postId);
-  http.Response getUserBookMarkByPostId(int postId);
+  Future<Response> createBookMark(int userId, int postId);
+  Future<Response> getUserBookMarkByPostId(int postId);
 }

@@ -26,4 +26,9 @@ class ApiUrlConstants {
       "${remoteUrl}api/dislikes/CreateDislike";
   static const String getUserDislikesByPostId =
       "${remoteUrl}api/dislikes/GetUserDislikesByPostId";
+
+  static const String createBookMark =
+      "${remoteUrl}api/bookmarkers/CreateBookMark";
+  static const String getUserBookMarkByPostId =
+      "${remoteUrl}bookmarkers/GetUserBookMarkByPostId";
 }
