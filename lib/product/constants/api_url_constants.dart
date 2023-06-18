@@ -30,5 +30,5 @@ class ApiUrlConstants {
   static const String createBookMark =
       "${remoteUrl}api/bookmarkers/CreateBookMark";
   static const String getUserBookMarkByPostId =
-      "${remoteUrl}bookmarkers/GetUserBookMarkByPostId";
+      "${remoteUrl}api/bookmarkers/GetUserBookMarkByPostId";
 }

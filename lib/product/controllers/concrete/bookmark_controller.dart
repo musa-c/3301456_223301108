@@ -14,7 +14,7 @@ class BookMarkController implements IBookMarkController {
   @override
   Future<Response> getUserBookMarkByPostId(int postId) async {
     final response = await http
-        .get(Uri.parse('${ApiUrlConstants.getUserDislikesByPostId}/$postId'));
+        .get(Uri.parse('${ApiUrlConstants.getUserBookMarkByPostId}/$postId'));
     return response;
   }
 }
