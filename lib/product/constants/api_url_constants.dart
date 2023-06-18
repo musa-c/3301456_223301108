@@ -21,4 +21,9 @@ class ApiUrlConstants {
   static const String createLikeUrl = "${remoteUrl}api/likes/CreateLike";
   static const String getUserLikesByPostIdUrl =
       "${remoteUrl}api/likes/getUserLikesByPostId";
+
+  static const String createDislikeUrl =
+      "${remoteUrl}api/dislikes/CreateDislike";
+  static const String getUserDislikesByPostId =
+      "${remoteUrl}api/dislikes/GetUserDislikesByPostId";
 }

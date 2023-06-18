@@ -1,6 +1,6 @@
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 abstract class IDislikeController {
-  http.Response createDislike(int userId, int postId);
-  http.Response getUserDislikesByPostId(int postId);
+  Future<Response> createDislike(int userId, int postId);
+  Future<Response> getUserDislikesByPostId(int postId);
 }

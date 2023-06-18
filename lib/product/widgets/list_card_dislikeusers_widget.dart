@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:abc/product/controllers/concrete/dislike_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../models/post_model.dart';
 import 'list_card_user_widget.dart';
 
@@ -17,9 +17,11 @@ class ListCardDislikeUsers extends StatefulWidget {
 class _ListCardDislikeUsersState extends State<ListCardDislikeUsers> {
   List<Post>? posts = [];
 
-  void getLikeUsers() async {
-    final response = await http.get(Uri.parse(
-        'http://192.168.1.6:45455/api/dislikes/GetUserDislikesByPostId/${widget.postId}'));
+  void getDislikeUsers() async {
+    DislikesController dislikesController = DislikesController();
+    final response =
+        await dislikesController.getUserDislikesByPostId(widget.postId);
+
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Post> postList =
@@ -33,7 +35,7 @@ class _ListCardDislikeUsersState extends State<ListCardDislikeUsers> {
   @override
   void initState() {
     super.initState();
-    getLikeUsers();
+    getDislikeUsers();
   }
 
   @override
