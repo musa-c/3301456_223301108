@@ -9,7 +9,8 @@ import "package:abc/product/models/post_model.dart";
 class ProfileView extends StatefulWidget {
   User? user = User();
   User? myuser = User();
-  ProfileView({super.key, this.user, this.myuser});
+  void Function()? callbackGetPost;
+  ProfileView({super.key, this.user, this.myuser, this.callbackGetPost});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -17,8 +18,6 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final String _url = "https://picsum.photos/id/237/200/300";
-  // Map<String, dynamic>? data;
-  // User userargs = User();
 
   @override
   void initState() {
@@ -28,9 +27,6 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    // userargs = data!['user'];
-    // print("profileargs:");
   }
 
   @override
@@ -151,8 +147,10 @@ class _ProfileViewState extends State<ProfileView> {
   Widget get _ListViewExpanded => Expanded(
       flex: 2, child: SizedBox(width: double.infinity, child: _ListView));
 
-  Widget get _ListView =>
-      ListProfileWidget(myuser: widget.myuser, user: widget.user);
+  Widget get _ListView => ListProfileWidget(
+      myuser: widget.myuser,
+      user: widget.user,
+      callbackGetPost: widget.callbackGetPost);
 
   PreferredSize get _appBarDivider => PreferredSize(
         preferredSize: Size.fromHeight(1.0),
