@@ -166,6 +166,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                     title: Text("Profil"),
                   ),
                   body: ProfileView(
+                    callbackGetPost: getPost,
                     user: user,
                     myuser: widget.user,
                   )),
@@ -233,13 +234,15 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                     setLike(post.id!);
                   },
                   onTapUser: () {
-                    Modal(
-                        post.id!,
-                        "Beğenenler",
-                        ListCardLikeUsers(
-                          postId: post.id!,
-                          myuser: widget.user,
-                        ));
+                    post.likeCount != 0
+                        ? Modal(
+                            post.id!,
+                            "Beğenenler",
+                            ListCardLikeUsers(
+                              postId: post.id!,
+                              myuser: widget.user,
+                            ))
+                        : null;
                   },
                 ),
                 ListIconWidget(

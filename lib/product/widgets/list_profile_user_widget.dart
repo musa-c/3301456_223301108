@@ -7,14 +7,21 @@ import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import '../controllers/concrete/bookmark_controller.dart';
+import '../controllers/concrete/dislike_controller.dart';
+import '../controllers/concrete/likes_controller.dart';
 import 'button_widget.dart';
+import 'list_card_bookmarkusers_widget.dart';
+import 'list_card_dislikeusers_widget.dart';
+import 'list_card_likeusers_widget.dart';
 import 'list_icon_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ListProfileWidget extends StatefulWidget {
   User? user;
   User? myuser;
-  ListProfileWidget({super.key, this.myuser, this.user});
+  void Function()? callbackGetPost;
+  ListProfileWidget({super.key, this.myuser, this.user, this.callbackGetPost});
 
   @override
   State<ListProfileWidget> createState() => _ListProfileWidgetState();
@@ -31,6 +38,22 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   void initState() {
     super.initState();
     getPost();
+  }
+
+  bool isUserIdLike(List<Likes>? likesList) {
+    if (likesList == null) return false;
+    return likesList.any((like) => like.userId == widget.myuser!.id);
+  }
+
+  bool isUserIdDislike(List<Dislikes>? dislikesList) {
+    if (dislikesList == null) return false;
+    return dislikesList.any((dislike) => dislike.userId == widget.myuser!.id);
+  }
+
+  bool isUserIdBookMark(List<BookMarks>? bookMarkesList) {
+    if (bookMarkesList == null) return false;
+    return bookMarkesList
+        .any((bookMark) => bookMark.userId == widget.myuser!.id);
   }
 
   String textvalue = "";
@@ -122,6 +145,66 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
         }
       } else {
         AlertDialog(title: Text("Hata"));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void setLike(int postId) async {
+    int userId = widget.myuser!.id!;
+    final http.Response response;
+    LikeController likeController = LikeController();
+    try {
+      response = await likeController.createLike(userId, postId);
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        getPost();
+        if (widget.callbackGetPost != null) {
+          widget.callbackGetPost!();
+        }
+      } else {
+        print(response.statusCode);
+        print(response.body);
+        print("hata");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void setDislike(int postId) async {
+    int userId = widget.myuser!.id!;
+    final http.Response response;
+    DislikesController dislikesController = DislikesController();
+    try {
+      response = await dislikesController.createDislike(userId, postId);
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        getPost();
+        if (widget.callbackGetPost != null) {
+          widget.callbackGetPost!();
+        }
+      } else {
+        print("hata");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void setBookMark(int postId) async {
+    int userId = widget.myuser!.id!;
+    final http.Response response;
+    BookMarkController bookMarkController = BookMarkController();
+    try {
+      response = await bookMarkController.createBookMark(userId, postId);
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        getPost();
+        if (widget.callbackGetPost != null) {
+          widget.callbackGetPost!();
+        }
+      } else {
+        print("hata");
       }
     } catch (e) {
       print(e);
@@ -350,9 +433,36 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
     );
   }
 
+  void Modal(int postId, String opr, Widget List) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              title: Text(opr),
+              backgroundColor: ColorConstants.blackColor,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pop(); // Geri dönüş butonuna basıldığında dialog kapatılıyor
+                },
+              ),
+            ),
+            body: List);
+      },
+    );
+  }
+
   Widget _listContext(Post post) => GestureDetector(
         onLongPress: () {
-          _postDialog(post);
+          widget.user?.id == null
+              ? null
+              : widget.user?.id == widget.myuser!.id
+                  ? _postDialog(post)
+                  : null;
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,17 +488,65 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                   ListIconWidget(
                     icon: Icons.arrow_upward_rounded,
                     count: post.likeCount,
-                    onTap: () {},
+                    color: isUserIdLike(post.likes)
+                        ? ColorConstants.likeColor
+                        : ColorConstants.primaryGreyColor,
+                    onTap: () {
+                      setLike(post.id!);
+                    },
+                    onTapUser: () {
+                      post.likeCount != 0
+                          ? Modal(
+                              post.id!,
+                              "Beğenenler",
+                              ListCardLikeUsers(
+                                postId: post.id!,
+                                myuser: widget.myuser,
+                              ))
+                          : null;
+                    },
                   ),
                   ListIconWidget(
                     icon: Icons.arrow_downward_rounded,
                     count: post.dislikeCount,
-                    onTap: () {},
+                    color: isUserIdDislike(post.dislikes)
+                        ? ColorConstants.dislikeColor
+                        : ColorConstants.primaryGreyColor,
+                    onTap: () {
+                      setDislike(post.id!);
+                    },
+                    onTapUser: () {
+                      post.dislikeCount != 0
+                          ? Modal(
+                              post.id!,
+                              "Beğenmeyenler",
+                              ListCardDislikeUsers(
+                                postId: post.id!,
+                                myuser: widget.myuser,
+                              ))
+                          : null;
+                    },
                   ),
                   ListIconWidget(
                     icon: Icons.bookmark_border_rounded,
                     count: post.bookMarkCount,
-                    onTap: () {},
+                    color: isUserIdBookMark(post.bookMarks)
+                        ? ColorConstants.bookMarkColor
+                        : ColorConstants.primaryGreyColor,
+                    onTap: () {
+                      setBookMark(post.id!);
+                    },
+                    onTapUser: () {
+                      post.bookMarkCount != 0
+                          ? Modal(
+                              post.id!,
+                              "Kaydedenler",
+                              ListCardBookMarkUsers(
+                                postId: post.id!,
+                                myuser: widget.myuser,
+                              ))
+                          : null;
+                    },
                   ),
                 ],
               ),
