@@ -83,6 +83,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
           webBgColor: "#808080",
           fontSize: 16.0,
         );
+        Navigator.pop(context);
       } else {
         setState(() {
           isLoading = false;
