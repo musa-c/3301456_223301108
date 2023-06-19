@@ -25,12 +25,40 @@ class LogInView extends StatefulWidget {
 }
 
 class _LogInViewState extends State<LogInView> {
+  final TextEditingController _textEditingControllerUserName =
+      TextEditingController();
+  final TextEditingController _textEditingControllerPassword =
+      TextEditingController();
+  UserLocalDb userLocalDb = UserLocalDb();
+
+  void getUser() async {
+    LocalDbUserModel? user = await userLocalDb.getUser();
+    setState(() {
+      if (isEmailAuth) {
+        userOrEmail = user?.email ?? "";
+        _textEditingControllerUserName.text = user?.email ?? "";
+      } else {
+        userOrEmail = user?.email ?? "";
+        _textEditingControllerUserName.text = user?.username ?? "";
+      }
+      pass = user?.password ?? "";
+    });
+
+    _textEditingControllerPassword.text = user?.password ?? "";
+  }
+
   @override
-  void initState() async {
+  void initState() {
     // TODO: implement initState
     super.initState();
-    UserLocalDb userLocalDb = UserLocalDb();
-    LocalDbUserModel? user = await userLocalDb.getUser();
+    getUser();
+  }
+
+  @override
+  void dispose() {
+    _textEditingControllerUserName.dispose();
+    _textEditingControllerPassword.dispose();
+    super.dispose();
   }
 
   String? userOrEmail;
@@ -183,6 +211,7 @@ class _LogInViewState extends State<LogInView> {
   Widget get _appTitle => AppTitleWidget(app_title: StringConstants.appName);
 
   Widget get _textFormKullAdi => TextFieldWidget(
+      controller: _textEditingControllerUserName,
       onDataChanged: (text) {
         setState(() {
           userOrEmail = text;
@@ -193,6 +222,7 @@ class _LogInViewState extends State<LogInView> {
           : StringConstants.isEmailAuthFalsePlaceHolder);
 
   Widget get _textFormSifre => TextFieldWidget(
+      controller: _textEditingControllerPassword,
       sifregizle: sifregizle,
       iconButton: IconButton(
         onPressed: () {
@@ -267,6 +297,7 @@ class _LogInViewState extends State<LogInView> {
         setState(() {
           isEmailAuth = !isEmailAuth;
         });
+        getUser();
       });
 
   Widget get _signUpButton => ButtonWidget.Icon(
