@@ -7,13 +7,14 @@ class TextFieldWidget extends StatelessWidget {
   IconButton? iconButton;
   final ValueChanged<String>? onDataChanged;
   bool? sifregizle;
-
+  TextEditingController? controller;
   TextFieldWidget(
       {this.onDataChanged,
       super.key,
       required this.hintText,
       this.iconButton,
-      this.sifregizle});
+      this.sifregizle,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class TextFieldWidget extends StatelessWidget {
         height: 44,
         width: 380,
         child: TextField(
+            controller: controller,
             obscureText: sifregizle ?? false,
             style: const TextStyle(color: Colors.white),
             onChanged: (text) {
