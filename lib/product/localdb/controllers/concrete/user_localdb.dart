@@ -17,6 +17,7 @@ class UserLocalDb implements IUserLocalDb {
 
   @override
   Future<void> createUser(LocalDbUserModel user) async {
+    deleteUser();
     Database db = await initializeDb();
     db.insert(
       "User",
