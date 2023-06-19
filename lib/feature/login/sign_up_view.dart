@@ -64,6 +64,7 @@ class _SignUpViewState extends State<SignUpView> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.pushNamed(context, 'login');
               },
               child: Text('Kapat'),
             ),
@@ -170,8 +171,6 @@ class _SignUpViewState extends State<SignUpView> {
                   )
                 : Container(),
             SizedBox(height: 16),
-            _textFormName,
-            SizedBox(height: 16),
             _textFormKullAdi,
             SizedBox(height: 16),
             _textFormEmail,
@@ -186,7 +185,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget get _appTitle => AppTitleWidget(app_title: "PAYLAP");
-  Widget get _textFormName => TextFieldWidget(hintText: "İsim");
+
   Widget get _textFormKullAdi => TextFieldWidget(
       hintText: "Kullanıcı Adı",
       onDataChanged: (value) => setState(() {
