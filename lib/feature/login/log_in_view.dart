@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 import 'package:abc/feature/login/sign_up_view.dart';
-import 'package:abc/product/controllers/concrete/user_controller.dart';
+import 'package:abc/product/api/controllers/concrete/user_controller.dart';
+import 'package:abc/product/localdb/controllers/concrete/user_localdb.dart';
 import 'package:abc/product/widgets/app_title_widget.dart';
 import 'package:abc/product/widgets/button_widget.dart';
 import 'package:abc/product/widgets/text_field_widget.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart' as http;
 import '../../../product/models/post_model.dart';
 import '../../product/constants/color_constants.dart';
 import '../../product/constants/string_constants.dart';
+import '../../product/localdb/user_model.dart/localdb_user_model.dart';
 import '../../tabbar_view.dart';
 
 class LogInView extends StatefulWidget {
@@ -23,6 +25,14 @@ class LogInView extends StatefulWidget {
 }
 
 class _LogInViewState extends State<LogInView> {
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+    UserLocalDb userLocalDb = UserLocalDb();
+    LocalDbUserModel? user = await userLocalDb.getUser();
+  }
+
   String? userOrEmail;
   String? pass;
   late bool sifregizle = true;

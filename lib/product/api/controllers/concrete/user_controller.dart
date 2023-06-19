@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:abc/product/constants/api_url_constants.dart';
 import 'package:http/src/response.dart';
 
-import '../../models/post_model.dart';
+import '../../../models/post_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../abstract/i_user_controller.dart';

@@ -1,6 +1,6 @@
 import 'package:http/http.dart';
 
-import '../../models/post_model.dart';
+import '../../../models/post_model.dart';
 
 abstract class IUserController {
   Future<List<User>> getAll();

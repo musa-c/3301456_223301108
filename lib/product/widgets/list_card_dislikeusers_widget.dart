@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:abc/product/controllers/concrete/dislike_controller.dart';
+import 'package:abc/product/api/controllers/concrete/dislike_controller.dart';
 import 'package:flutter/material.dart';
 import '../models/post_model.dart';
 import 'list_card_user_widget.dart';

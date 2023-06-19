@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:abc/product/constants/api_url_constants.dart';
-import 'package:abc/product/controllers/abstract/i_post_controller.dart';
+import 'package:abc/product/api/controllers/abstract/i_post_controller.dart';
 import 'package:http/src/response.dart';
 import 'package:http/http.dart' as http;
-import '../../models/post_model.dart';
+import '../../../models/post_model.dart';
 
 class PostController implements IPostController {
   @override

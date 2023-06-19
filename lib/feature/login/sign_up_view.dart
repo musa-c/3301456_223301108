@@ -4,7 +4,9 @@
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:abc/product/controllers/concrete/user_controller.dart';
+import 'package:abc/product/api/controllers/concrete/user_controller.dart';
+import 'package:abc/product/localdb/controllers/concrete/user_localdb.dart';
+import 'package:abc/product/localdb/user_model.dart/localdb_user_model.dart';
 import 'package:abc/product/widgets/app_title_widget.dart';
 import 'package:abc/product/widgets/button_widget.dart';
 import 'package:abc/product/widgets/text_field_widget.dart';
@@ -82,6 +84,12 @@ class _SignUpViewState extends State<SignUpView> {
           await userController.createUser(userName, email, password);
 
       if (response.statusCode == 201) {
+        LocalDbUserModel localDbUserModel = LocalDbUserModel(
+            password: password, username: userName, email: email);
+        UserLocalDb userLocalDb = UserLocalDb();
+        userLocalDb
+            .createUser(localDbUserModel)
+            .then((value) => {print("başarılı.")});
         setState(() {
           isLoading = false;
           isDataAdded = true;

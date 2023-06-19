@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:abc/feature/screens/profile_screen.dart';
 import 'package:abc/product/constants/color_constants.dart';
-import 'package:abc/product/controllers/concrete/bookmark_controller.dart';
-import 'package:abc/product/controllers/concrete/dislike_controller.dart';
-import 'package:abc/product/controllers/concrete/likes_controller.dart';
-import 'package:abc/product/controllers/concrete/post_controller.dart';
+import 'package:abc/product/api/controllers/concrete/bookmark_controller.dart';
+import 'package:abc/product/api/controllers/concrete/dislike_controller.dart';
+import 'package:abc/product/api/controllers/concrete/likes_controller.dart';
+import 'package:abc/product/api/controllers/concrete/post_controller.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:abc/product/widgets/list_card_bookmarkusers_widget.dart';
 import 'package:abc/product/widgets/list_card_dislikeusers_widget.dart';

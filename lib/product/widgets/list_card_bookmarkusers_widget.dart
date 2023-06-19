@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:abc/product/controllers/concrete/bookmark_controller.dart';
+import 'package:abc/product/api/controllers/concrete/bookmark_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../models/post_model.dart';

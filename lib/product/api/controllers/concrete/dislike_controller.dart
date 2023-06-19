@@ -1,5 +1,5 @@
 import 'package:abc/product/constants/api_url_constants.dart';
-import 'package:abc/product/controllers/abstract/i_dislike_controller.dart';
+import 'package:abc/product/api/controllers/abstract/i_dislike_controller.dart';
 import 'package:http/src/response.dart';
 import 'package:http/http.dart' as http;
 

@@ -2,14 +2,14 @@
 
 import 'dart:async';
 import 'package:abc/product/constants/color_constants.dart';
-import 'package:abc/product/controllers/concrete/post_controller.dart';
+import 'package:abc/product/api/controllers/concrete/post_controller.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../controllers/concrete/bookmark_controller.dart';
-import '../controllers/concrete/dislike_controller.dart';
-import '../controllers/concrete/likes_controller.dart';
+import '../api/controllers/concrete/bookmark_controller.dart';
+import '../api/controllers/concrete/dislike_controller.dart';
+import '../api/controllers/concrete/likes_controller.dart';
 import 'button_widget.dart';
 import 'list_card_bookmarkusers_widget.dart';
 import 'list_card_dislikeusers_widget.dart';
