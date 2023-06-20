@@ -7,4 +7,5 @@ abstract class IUserController {
   Future<Response> emailorPasswordCheck(String email, String password);
   Future<Response> usernameOrPasswordCheck(String username, String password);
   Future<Response> createUser(String username, String email, String password);
+  Future<User> getUserById(int id);
 }

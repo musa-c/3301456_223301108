@@ -54,4 +54,20 @@ class UserController implements IUserController {
         '${ApiUrlConstants.usernameOrPasswordCheck}/$username/$password'));
     return response;
   }
+
+  @override
+  Future<User> getUserById(int id) async {
+    final response =
+        await http.get(Uri.parse('${ApiUrlConstants.getUserByIdUrl}/$id'));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      User user = User.fromJson(jsonResponse);
+      return user;
+    } else {
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to load users');
+    }
+  }
 }
