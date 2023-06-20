@@ -6,6 +6,7 @@ class ApiUrlConstants {
   static const String remoteUrl = "http://192.168.1.6:45455/";
 
   static const String getAllUserUrl = "${remoteUrl}api/users";
+  static const String getUserByIdUrl = "${remoteUrl}api/users/GetUserById";
   static const String createUserUrl = "$getAllUserUrl/createUser";
   static const String emailorPasswordCheckUrl =
       "$getAllUserUrl/emailorPasswordCheck";
