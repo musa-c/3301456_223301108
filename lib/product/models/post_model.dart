@@ -85,6 +85,10 @@ class Post {
 
 class User {
   int? id;
+  int? likeCount = 0;
+  int? commentCount = 0;
+  int? bookMarkCount = 0;
+  int? dislikeCount = 0;
   String? firstName;
   String? lastName;
   String? userName;
@@ -98,10 +102,18 @@ class User {
     this.userName,
     this.avatar,
     this.posts,
+    this.likeCount = 0,
+    this.commentCount = 0,
+    this.bookMarkCount = 0,
+    this.dislikeCount = 0,
   });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['Id'];
+    likeCount = json['LikeCount'];
+    commentCount = json['CommentCount'];
+    bookMarkCount = json['BookMarkCount'];
+    dislikeCount = json['DislikeCount'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
     userName = json['UserName'];
@@ -117,6 +129,10 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['Id'] = id;
+    data['LikeCount'] = likeCount;
+    data['CommentCount'] = commentCount;
+    data['BookMarkCount'] = bookMarkCount;
+    data['DislikeCount'] = dislikeCount;
     data['FirstName'] = firstName;
     data['LastName'] = lastName;
     data['UserName'] = userName;
