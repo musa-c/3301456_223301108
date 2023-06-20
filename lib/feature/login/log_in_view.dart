@@ -100,7 +100,6 @@ class _LogInViewState extends State<LogInView> {
         // return User.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 500) {
         // ignore: use_build_context_synchronously
-        print(response.body);
         showDialog(
           context: context,
           builder: (BuildContext context) {

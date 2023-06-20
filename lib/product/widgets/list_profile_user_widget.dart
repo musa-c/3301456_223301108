@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:abc/product/constants/color_constants.dart';
 import 'package:abc/product/api/controllers/concrete/post_controller.dart';
+import 'package:abc/product/file_operations/controllers/concrete/file_controller.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
   final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
   PostController postController = PostController();
+  FileController fileController = FileController();
   List<Post>? posts = [];
   bool isLoading = false;
 
@@ -149,6 +151,40 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  void fileSave(Post post) async {
+    if (updateText != "") {
+      await fileController
+          .saveToFile(updateText)
+          .then((value) => Fluttertoast.showToast(
+                msg: "Post dosyaya kaydedildi!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 2,
+                backgroundColor: ColorConstants.blackColor,
+                textColor: ColorConstants.purpleColor,
+                webPosition: "center",
+                webBgColor: "#808080",
+                fontSize: 16.0,
+                // ignore: invalid_return_type_for_catch_error
+              ).catchError((a) => print("başarıı<")));
+    } else {
+      await fileController
+          .saveToFile(post.text!)
+          .then((value) => Fluttertoast.showToast(
+                msg: "Post dosyaya kaydedildi!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 2,
+                backgroundColor: ColorConstants.blackColor,
+                textColor: ColorConstants.purpleColor,
+                webPosition: "center",
+                webBgColor: "#808080",
+                fontSize: 16.0,
+                // ignore: invalid_return_type_for_catch_error
+              ).catchError((a) => print("başarıı<")));
     }
   }
 
@@ -305,7 +341,18 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                       },
                       child: isLoading
                           ? CircularProgressIndicator()
-                          : Text("Gönder gitsin"))
+                          : Text("Gönder gitsin")),
+                  SizedBox(height: 10),
+                  ButtonWidget(
+                      onPressed: () {
+                        fileController.readFromFile().then((postText) => {
+                              setState(() {
+                                _textController.text = postText;
+                                textvalue = postText;
+                              })
+                            });
+                      },
+                      child: Text("Kaydetiğin postu göster."))
                 ],
               ));
         },
@@ -408,26 +455,37 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
             ),
           ),
           actions: [
-            TextButton(
-              child: const Text('Sil'),
-              onPressed: () {
-                deletePost(post.id!);
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text("Güncelle"),
-              onPressed: () {
-                updatePost(post);
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Vazgeç'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            Row(
+              children: [
+                TextButton(
+                  child: const Text('Sil'),
+                  onPressed: () {
+                    deletePost(post.id!);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text("Güncelle"),
+                  onPressed: () {
+                    updatePost(post);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text("Dosyaya kaydet"),
+                  onPressed: () {
+                    fileSave(post);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Vazgeç'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            )
           ],
         );
       },
