@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,8 +7,8 @@ import '../../product/constants/color_constants.dart';
 
 class AvatarSelect extends StatefulWidget {
   User? myuser = User();
-  void Function()? callbackGetPost;
-  AvatarSelect({super.key, this.myuser, this.callbackGetPost});
+  void Function(int id)? callbackGetUserById;
+  AvatarSelect({super.key, this.myuser, this.callbackGetUserById});
 
   @override
   State<AvatarSelect> createState() => _AvatarSelectState();
@@ -28,14 +26,14 @@ class _AvatarSelectState extends State<AvatarSelect> {
         await userController.updateAvatar(widget.myuser!.id!, updateAvatar);
 
     if (response.statusCode == 200) {
-      widget.callbackGetPost;
+      widget.callbackGetUserById!(widget.myuser!.id!);
       // ignore: use_build_context_synchronously
 
       // ignore: use_build_context_synchronously
-      Navigator.pop(
-        context,
-        User.fromJson(json.decode(response.body)),
-      );
+      // Navigator.pop(
+      //   context,
+      //   User.fromJson(json.decode(response.body)),
+      // );
 
       Fluttertoast.showToast(
         msg: "Profil resmi değiştirildi.",

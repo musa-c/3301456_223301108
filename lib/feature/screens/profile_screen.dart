@@ -2,6 +2,7 @@
 
 import 'package:abc/feature/screens/avatar_select.dart';
 import 'package:abc/feature/screens/setting_screen.dart';
+import 'package:abc/product/api/controllers/concrete/user_controller.dart';
 import 'package:abc/product/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +23,20 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     super.initState();
+    GetUserById(widget.user!.id!);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+  }
+
+  void GetUserById(int id) async {
+    UserController userController = UserController();
+    User my_user = await userController.getUserById(id);
+    setState(() {
+      widget.user = my_user;
+    });
   }
 
   @override
@@ -108,11 +118,15 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         body: AvatarSelect(
                           myuser: widget.myuser,
-                          callbackGetPost: widget.callbackGetPost,
+                          callbackGetUserById: GetUserById,
                         )),
-                  )).then((value) => setState(() {
-                    widget.user = value;
-                  }));
+                  ));
+
+          // .then((value) => setState(() {
+          //   value == null
+          //       ? widget.user = widget.user
+          //       : widget.user = value;
+          // }));
         },
         child: CircleAvatar(
           backgroundImage:
