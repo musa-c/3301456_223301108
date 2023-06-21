@@ -23,7 +23,6 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
   String? passw;
   User user = User();
 
-  final String _url = "https://picsum.photos/id/237/200/300";
   int _selectedTabIndex = 0;
   Map<String, dynamic>? data;
 
@@ -121,12 +120,14 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
               // Navigator.pushNamed(context, "profile",
               //     arguments: {"username": username, "pasw": pasw});
             },
-            child:
-                CircleAvatar(radius: 17.5, backgroundImage: NetworkImage(_url)
-                    // UserData().getAvatar(username) == null
-                    //     ? NetworkImage(_url)
-                    // : NetworkImage(UserData().getAvatar(username)!))
-                    )),
+            child: CircleAvatar(
+                radius: 17.5,
+                backgroundImage:
+                    AssetImage("assets/avatars/${user.avatar!}.jpg"))
+            // UserData().getAvatar(username) == null
+            //     ? NetworkImage(_url)
+            // : NetworkImage(UserData().getAvatar(username)!))
+            )
       ]);
 
   Widget get _appBarTitle => Text(

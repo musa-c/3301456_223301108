@@ -14,7 +14,6 @@ class ListCardUserSearch extends StatefulWidget {
 }
 
 class _ListCardUserSearchState extends State<ListCardUserSearch> {
-  final String _url = "https://picsum.photos/id/237/200/300";
   List<User>? users = [];
 
   void getUser() async {
@@ -100,7 +99,7 @@ class _ListCardUserSearchState extends State<ListCardUserSearch> {
       },
       child: CircleAvatar(
         radius: 24,
-        backgroundImage: NetworkImage(_url),
+        backgroundImage: AssetImage("assets/avatars/${user.avatar!}.jpg"),
       ));
 
   Widget _ListTileTitle(User user) => Text(

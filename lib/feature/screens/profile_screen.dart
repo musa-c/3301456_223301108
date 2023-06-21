@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
+import 'package:abc/feature/screens/avatar_select.dart';
 import 'package:abc/feature/screens/setting_screen.dart';
 import 'package:abc/product/widgets/list_profile_user_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final String _url = "https://picsum.photos/id/237/200/300";
-
+  // myuser'i tekrar çek! api'dan
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.user?.avatar);
     return Container(child: _ProfileContext);
   }
 
@@ -92,12 +91,34 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       ]);
 
-  Widget get _ProfileAvatar => CircleAvatar(
-        backgroundImage:
-            widget.user?.avatar == "" || widget.user?.avatar == null
-                ? NetworkImage(_url)
-                : null,
-        radius: 40,
+  Widget get _ProfileAvatar => GestureDetector(
+        onDoubleTap: () {
+          widget.myuser!.id != widget.user!.id
+              ? null
+              : Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    fullscreenDialog: false,
+                    builder: (context) => Scaffold(
+                        backgroundColor: Colors.black,
+                        appBar: AppBar(
+                          bottom: _appBarDivider,
+                          backgroundColor: Colors.black,
+                          title: Text("Avatar Seçimi"),
+                        ),
+                        body: AvatarSelect(
+                          myuser: widget.myuser,
+                          callbackGetPost: widget.callbackGetPost,
+                        )),
+                  )).then((value) => setState(() {
+                    widget.user = value;
+                  }));
+        },
+        child: CircleAvatar(
+          backgroundImage:
+              AssetImage("assets/avatars/${widget.user!.avatar!}.jpg"),
+          radius: 40,
+        ),
       );
 
   Widget get _ProfileUserName => Container(

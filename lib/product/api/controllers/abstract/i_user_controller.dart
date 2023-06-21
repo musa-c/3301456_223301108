@@ -8,4 +8,5 @@ abstract class IUserController {
   Future<Response> usernameOrPasswordCheck(String username, String password);
   Future<Response> createUser(String username, String email, String password);
   Future<User> getUserById(int id);
+  Future<Response> updateAvatar(int userId, String avatar);
 }

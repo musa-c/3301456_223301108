@@ -25,7 +25,6 @@ class ListBuilderWidget extends StatefulWidget {
 }
 
 class _ListBuilderWidgetState extends State<ListBuilderWidget> {
-  final String _url = "https://picsum.photos/id/237/200/300";
   List<Post>? posts = [];
   @override
   void initState() {
@@ -174,7 +173,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       },
       child: CircleAvatar(
         radius: 24,
-        backgroundImage: NetworkImage(_url),
+        backgroundImage: AssetImage("assets/avatars/${user.avatar!}.jpg"),
       ));
 
   Widget _listCartUserName(String username) => Text(

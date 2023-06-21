@@ -70,4 +70,11 @@ class UserController implements IUserController {
       throw Exception('Failed to load users');
     }
   }
+
+  @override
+  Future<Response> updateAvatar(int userId, String avatar) async {
+    final response = await http
+        .put(Uri.parse('${ApiUrlConstants.updateAvatarUrl}/$userId/$avatar'));
+    return response;
+  }
 }

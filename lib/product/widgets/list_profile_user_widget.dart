@@ -29,7 +29,6 @@ class ListProfileWidget extends StatefulWidget {
 }
 
 class _ListProfileWidgetState extends State<ListProfileWidget> {
-  final String _url = "https://picsum.photos/id/237/200/300";
   final TextEditingController _textController = TextEditingController();
   PostController postController = PostController();
   FileController fileController = FileController();
@@ -304,7 +303,7 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                     child: TextFormField(
                       controller: _textController,
                       keyboardType: TextInputType.multiline,
-                      maxLines: 10,
+                      maxLines: 5,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -400,12 +399,10 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
       margin: EdgeInsets.fromLTRB(0, 0, 0, 14),
       child: _listAvatarChilt());
 
-  Widget _listAvatarChilt() =>
-      CircleAvatar(radius: 24, backgroundImage: NetworkImage(_url)
-          // UserData().getAvatar(widget.username!) == null
-          //     ? NetworkImage(_url)
-          //     : NetworkImage(UserData().getAvatar(widget.username!)!),
-          );
+  Widget _listAvatarChilt() => CircleAvatar(
+      radius: 24,
+      backgroundImage:
+          AssetImage("assets/avatars/${widget.user!.avatar!}.jpg"));
 
   Widget _listCartUserName(String text) => Text(
         text,

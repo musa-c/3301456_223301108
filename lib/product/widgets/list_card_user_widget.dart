@@ -13,8 +13,6 @@ class ListCardUserWidget extends StatefulWidget {
 }
 
 class _ListCardUserWidgetState extends State<ListCardUserWidget> {
-  final String _url = "https://picsum.photos/id/237/200/300";
-
   @override
   Widget build(BuildContext context) {
     return _ListViewBuilder;
@@ -80,7 +78,7 @@ class _ListCardUserWidgetState extends State<ListCardUserWidget> {
       },
       child: CircleAvatar(
         radius: 24,
-        backgroundImage: NetworkImage(_url),
+        backgroundImage: AssetImage("assets/avatars/${post.user!.avatar!}.jpg"),
       ));
 
   Widget _ListTileTitle(Post post) => Text(

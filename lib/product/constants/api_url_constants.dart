@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 @immutable
 class ApiUrlConstants {
   const ApiUrlConstants._();
-  static const String remoteUrl = "http://192.168.1.6:45455/";
+  static const String remoteUrl = "https://192.168.1.6:45455/";
 
   static const String getAllUserUrl = "${remoteUrl}api/users";
   static const String getUserByIdUrl = "${remoteUrl}api/users/GetUserById";
@@ -12,6 +12,7 @@ class ApiUrlConstants {
       "$getAllUserUrl/emailorPasswordCheck";
   static const String usernameOrPasswordCheck =
       "$getAllUserUrl/usernameOrPasswordCheck";
+  static const String updateAvatarUrl = "$getAllUserUrl/UpdateAvatar";
 
   static const String getAllPostUrl = "${remoteUrl}api/posts";
   static const String createPostUrl = "$getAllPostUrl/CreatePost";
