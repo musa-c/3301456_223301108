@@ -26,11 +26,6 @@ class ListBuilderWidget extends StatefulWidget {
 
 class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   List<Post>? posts = [];
-  @override
-  void initState() {
-    super.initState();
-    getPost();
-  }
 
   bool isUserIdLike(List<Likes>? likesList) {
     if (likesList == null) return false;
@@ -102,12 +97,22 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     PostController postController = PostController();
     try {
       List<Post> postList = await postController.getAll();
-      setState(() {
-        posts = postList;
-      });
+      if (mounted) {
+        setState(() {
+          posts = postList;
+        });
+      } else {
+        return;
+      }
     } catch (e) {
       print("hata:  $e");
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPost();
   }
 
   @override

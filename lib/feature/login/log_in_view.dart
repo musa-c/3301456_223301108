@@ -11,6 +11,7 @@ import 'package:abc/product/widgets/button_widget.dart';
 import 'package:abc/product/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../../product/models/post_model.dart';
 import '../../product/constants/color_constants.dart';
 import '../../product/constants/string_constants.dart';
@@ -51,14 +52,18 @@ class _LogInViewState extends State<LogInView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUser();
+    if (!kIsWeb) {
+      getUser();
+    }
   }
 
   @override
   void dispose() {
-    _textEditingControllerUserName.dispose();
-    _textEditingControllerPassword.dispose();
     super.dispose();
+    if (!kIsWeb) {
+      _textEditingControllerUserName.dispose();
+      _textEditingControllerPassword.dispose();
+    }
   }
 
   String? userOrEmail;

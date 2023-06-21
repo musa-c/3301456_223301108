@@ -11,6 +11,7 @@ import 'package:abc/product/widgets/app_title_widget.dart';
 import 'package:abc/product/widgets/button_widget.dart';
 import 'package:abc/product/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -85,12 +86,15 @@ class _SignUpViewState extends State<SignUpView> {
           await userController.createUser(userName, email, password);
 
       if (response.statusCode == 201) {
-        LocalDbUserModel localDbUserModel = LocalDbUserModel(
-            password: password, username: userName, email: email);
-        UserLocalDb userLocalDb = UserLocalDb();
-        userLocalDb
-            .createUser(localDbUserModel)
-            .then((value) => {print("başarılı.")});
+        if (!kIsWeb) {
+          LocalDbUserModel localDbUserModel = LocalDbUserModel(
+              password: password, username: userName, email: email);
+          UserLocalDb userLocalDb = UserLocalDb();
+          userLocalDb
+              .createUser(localDbUserModel)
+              .then((value) => {print("başarılı.")});
+        }
+
         setState(() {
           isLoading = false;
           isDataAdded = true;

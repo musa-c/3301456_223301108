@@ -29,6 +29,12 @@ class ListIconWidgetState extends State<ListIconWidget>
   final double _iconSize = 14;
 
   @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
@@ -58,11 +64,6 @@ class ListIconWidgetState extends State<ListIconWidget>
   }
 
   // initin tam tersinidir. state ile ilişki sona erildiğinde çalışır.
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   void _toggleAnimation() {
     if (_animationController.isAnimating) {

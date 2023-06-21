@@ -5,8 +5,10 @@ import 'package:abc/product/constants/color_constants.dart';
 import 'package:abc/product/api/controllers/concrete/post_controller.dart';
 import 'package:abc/product/file_operations/controllers/concrete/file_controller.dart';
 import 'package:abc/product/models/post_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import '../api/controllers/concrete/bookmark_controller.dart';
 import '../api/controllers/concrete/dislike_controller.dart';
@@ -342,16 +344,18 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                           ? CircularProgressIndicator()
                           : Text("Gönder gitsin")),
                   SizedBox(height: 10),
-                  ButtonWidget(
-                      onPressed: () {
-                        fileController.readFromFile().then((postText) => {
-                              setState(() {
-                                _textController.text = postText;
-                                textvalue = postText;
-                              })
-                            });
-                      },
-                      child: Text("Kaydetiğin postu göster."))
+                  !kIsWeb
+                      ? ButtonWidget(
+                          onPressed: () {
+                            fileController.readFromFile().then((postText) => {
+                                  setState(() {
+                                    _textController.text = postText;
+                                    textvalue = postText;
+                                  })
+                                });
+                          },
+                          child: Text("Kaydetiğin postu göster."))
+                      : Container()
                 ],
               ));
         },
@@ -468,13 +472,15 @@ class _ListProfileWidgetState extends State<ListProfileWidget> {
                     Navigator.of(context).pop();
                   },
                 ),
-                TextButton(
-                  child: Text("Dosyaya kaydet"),
-                  onPressed: () {
-                    fileSave(post);
-                    Navigator.of(context).pop();
-                  },
-                ),
+                !kIsWeb
+                    ? TextButton(
+                        child: Text("Dosyaya kaydet"),
+                        onPressed: () {
+                          fileSave(post);
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    : Container(),
                 TextButton(
                   child: const Text('Vazgeç'),
                   onPressed: () {
