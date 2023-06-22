@@ -91,7 +91,7 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
   PreferredSizeWidget _appBar(index, username, pasw) => AppBar(
         elevation: 0,
         toolbarHeight: 59,
-        leading: _appBarAvatar(context, username, pasw),
+        // leading: _appBarAvatar(context, username, pasw),
         title: index == 1 ? _appBarTitleSearch : _appBarTitle,
         titleTextStyle: _appBarIconTitleStyle,
         centerTitle: true,
@@ -100,35 +100,35 @@ class _TabBarViewAbcState extends State<TabBarViewAbc> {
         actions: [_appBarIcon],
       );
 
-  Widget _appBarAvatar(context, username, pasw) =>
-      Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: false,
-                    builder: (context) => Scaffold(
-                        appBar: AppBar(
-                          bottom: _appBarDivider,
-                          backgroundColor: Colors.black,
-                          title: Text("Profil"),
-                        ),
-                        body: ProfileView(myuser: user, user: user)),
-                    // settings: RouteSettings(arguments: {"user": user})
-                  ));
-              // Navigator.pushNamed(context, "profile",
-              //     arguments: {"username": username, "pasw": pasw});
-            },
-            child: CircleAvatar(
-                radius: 17.5,
-                backgroundImage:
-                    AssetImage("assets/avatars/${user.avatar!}.jpg"))
-            // UserData().getAvatar(username) == null
-            //     ? NetworkImage(_url)
-            // : NetworkImage(UserData().getAvatar(username)!))
-            )
-      ]);
+  // Widget _appBarAvatar(context, username, pasw) =>
+  //     Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+  //       InkWell(
+  //           onTap: () {
+  //             Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   fullscreenDialog: false,
+  //                   builder: (context) => Scaffold(
+  //                       appBar: AppBar(
+  //                         bottom: _appBarDivider,
+  //                         backgroundColor: Colors.black,
+  //                         title: Text("Profil"),
+  //                       ),
+  //                       body: ProfileView(myuser: user, user: user)),
+  //                   // settings: RouteSettings(arguments: {"user": user})
+  //                 ));
+  //             // Navigator.pushNamed(context, "profile",
+  //             //     arguments: {"username": username, "pasw": pasw});
+  //           },
+  //           child: CircleAvatar(
+  //               radius: 17.5,
+  //               backgroundImage:
+  //                   AssetImage("assets/avatars/${user.avatar!}.jpg"))
+  //           // UserData().getAvatar(username) == null
+  //           //     ? NetworkImage(_url)
+  //           // : NetworkImage(UserData().getAvatar(username)!))
+  //           )
+  //     ]);
 
   Widget get _appBarTitle => Text(
         "PAYLAP",
