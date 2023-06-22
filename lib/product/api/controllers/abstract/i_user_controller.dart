@@ -9,4 +9,9 @@ abstract class IUserController {
   Future<Response> createUser(String username, String email, String password);
   Future<User> getUserById(int id);
   Future<Response> updateAvatar(int userId, String avatar);
+  Future<Response> updateEmail(int userId, String email);
+  Future<Response> updateFirstName(int userId, String firtname);
+  Future<Response> updateLastName(int userId, String lastname);
+  Future<Response> updatePassword(int userId, String password);
+  Future<Response> updateUserName(int userId, String username);
 }

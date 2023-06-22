@@ -13,6 +13,11 @@ class ApiUrlConstants {
   static const String usernameOrPasswordCheck =
       "$getAllUserUrl/usernameOrPasswordCheck";
   static const String updateAvatarUrl = "$getAllUserUrl/UpdateAvatar";
+  static const String updateEmailUrl = "$getAllUserUrl/UpdateEmail";
+  static const String updateFirstNameUrl = "$getAllUserUrl/UpdateFirstName";
+  static const String updateLastNameUrl = "$getAllUserUrl/UpdateLastName";
+  static const String updatePasswordUrl = "$getAllUserUrl/UpdatePassword";
+  static const String updateUserNameUrl = "$getAllUserUrl/UpdateUserName";
 
   static const String getAllPostUrl = "${remoteUrl}api/posts";
   static const String createPostUrl = "$getAllPostUrl/CreatePost";

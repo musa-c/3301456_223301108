@@ -77,4 +77,39 @@ class UserController implements IUserController {
         .put(Uri.parse('${ApiUrlConstants.updateAvatarUrl}/$userId/$avatar'));
     return response;
   }
+
+  @override
+  Future<Response> updateEmail(int userId, String email) async {
+    final response = await http
+        .put(Uri.parse('${ApiUrlConstants.updateEmailUrl}/$userId/$email'));
+    return response;
+  }
+
+  @override
+  Future<Response> updateFirstName(int userId, String firtname) async {
+    final response = await http.put(
+        Uri.parse('${ApiUrlConstants.updateFirstNameUrl}/$userId/$firtname'));
+    return response;
+  }
+
+  @override
+  Future<Response> updateLastName(int userId, String lastname) async {
+    final response = await http.put(
+        Uri.parse('${ApiUrlConstants.updateLastNameUrl}/$userId/$lastname'));
+    return response;
+  }
+
+  @override
+  Future<Response> updatePassword(int userId, String password) async {
+    final response = await http.put(
+        Uri.parse('${ApiUrlConstants.updatePasswordUrl}/$userId/$password'));
+    return response;
+  }
+
+  @override
+  Future<Response> updateUserName(int userId, String username) async {
+    final response = await http.put(
+        Uri.parse('${ApiUrlConstants.updateUserNameUrl}/$userId/$username'));
+    return response;
+  }
 }
