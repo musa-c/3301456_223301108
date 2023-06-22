@@ -90,37 +90,37 @@ class _AccountActivitiesState extends State<AccountActivities> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Indicator(
-                    color: ColorConstants.contentColorBlue,
+                    color: ColorConstants.likeColor,
                     text: 'Beğendiklerin',
                     isSquare: true,
-                    textColor: ColorConstants.contentColorBlue,
+                    textColor: ColorConstants.likeColor,
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Indicator(
-                    color: ColorConstants.contentColorYellow,
+                    color: ColorConstants.dislikeColor,
                     text: 'Beğenmediklerin',
                     isSquare: true,
-                    textColor: ColorConstants.contentColorYellow,
+                    textColor: ColorConstants.dislikeColor,
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Indicator(
-                    color: ColorConstants.contentColorPurple,
+                    color: ColorConstants.bookMarkColor,
                     text: 'Kaydettiklerin',
                     isSquare: true,
-                    textColor: ColorConstants.contentColorPurple,
+                    textColor: ColorConstants.bookMarkColor,
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Indicator(
-                    color: ColorConstants.contentColorGreen,
+                    color: ColorConstants.contentColorOrange,
                     text: 'Yorumların',
                     isSquare: true,
-                    textColor: ColorConstants.contentColorGreen,
+                    textColor: ColorConstants.contentColorOrange,
                   ),
                   SizedBox(
                     height: 18,
@@ -146,7 +146,7 @@ class _AccountActivitiesState extends State<AccountActivities> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: ColorConstants.contentColorBlue,
+            color: ColorConstants.likeColor,
             value: user.likeCount!.toDouble(),
             title: "%${percentageLike.toStringAsFixed(2)}",
             radius: radius,
@@ -159,7 +159,7 @@ class _AccountActivitiesState extends State<AccountActivities> {
           );
         case 1:
           return PieChartSectionData(
-            color: ColorConstants.contentColorYellow,
+            color: ColorConstants.dislikeColor,
             value: user.dislikeCount!.toDouble(),
             title: "%${percentageDislike.toStringAsFixed(2)}",
             radius: radius,
@@ -172,7 +172,7 @@ class _AccountActivitiesState extends State<AccountActivities> {
           );
         case 2:
           return PieChartSectionData(
-            color: ColorConstants.contentColorPurple,
+            color: ColorConstants.bookMarkColor,
             value: user.bookMarkCount!.toDouble(),
             title: "%${percentageBookMark.toStringAsFixed(2)}",
             radius: radius,
@@ -185,7 +185,7 @@ class _AccountActivitiesState extends State<AccountActivities> {
           );
         case 3:
           return PieChartSectionData(
-            color: ColorConstants.contentColorGreen,
+            color: ColorConstants.contentColorOrange,
             value: user.commentCount!.toDouble(),
             title: "%${percentageComment.toStringAsFixed(2)}",
             radius: radius,

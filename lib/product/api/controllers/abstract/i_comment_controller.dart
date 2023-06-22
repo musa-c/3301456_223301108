@@ -1,3 +1,4 @@
-// import 'package:http/http.dart' as http;
-
-abstract class ICommentController {}
+abstract class ICommentController {
+  // Future<Response> createComment(Comment comment);
+  // Future<Response> addComment(int postId, String comment);
+}

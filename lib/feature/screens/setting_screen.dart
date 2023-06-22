@@ -39,62 +39,18 @@ class SettingView extends StatelessWidget {
             Divider(
               color: Colors.grey,
             ),
-            _card(
-                Icon(
-                  Icons.arrow_upward_rounded,
-                  color: Colors.deepPurple,
-                ),
-                "Beğeniler",
-                context,
-                null),
-            Divider(
-              color: Colors.grey,
-            ),
-            _card(
-                Icon(
-                  Icons.arrow_downward_rounded,
-                  color: Colors.deepOrange,
-                ),
-                "Beğenilmeyenler",
-                context,
-                null),
-            Divider(
-              color: Colors.grey,
-            ),
-            _card(
-                Icon(
-                  Icons.bookmark_border_rounded,
-                  color: Colors.green,
-                ),
-                "Kaydedilen Gönderiler",
-                context,
-                null),
-            Divider(
-              color: Colors.grey,
-            ),
-            _card(
-                Icon(
-                  Icons.info_outline,
-                  color: Colors.amber[700],
-                ),
-                "Kaydedilen Gönderiler",
-                context,
-                null),
-            Divider(
-              color: Colors.grey,
-            ),
-            _card(
-                Icon(
-                  Icons.power_settings_new,
-                  color: Colors.amber[700],
-                ),
-                "Çıkış",
-                context,
-                // LogInView()
-                null),
-            Divider(
-              color: Colors.grey,
-            ),
+            // _card(
+            //   Icon(
+            //     Icons.power_settings_new,
+            //     color: ColorConstants.errorRed,
+            //   ),
+            //   "Çıkış",
+            //   context,
+            //   LogInView(),
+            // ),
+            // Divider(
+            //   color: Colors.grey,
+            // ),
           ],
         ));
   }
@@ -110,11 +66,13 @@ class SettingView extends StatelessWidget {
                   fullscreenDialog: false,
                   builder: (context) => Scaffold(
                       backgroundColor: Colors.black,
-                      appBar: AppBar(
-                        bottom: _appBarDivider,
-                        backgroundColor: Colors.black,
-                        title: Text(text),
-                      ),
+                      appBar: !(text == "Çıkış")
+                          ? AppBar(
+                              bottom: _appBarDivider,
+                              backgroundColor: Colors.black,
+                              title: Text(text),
+                            )
+                          : null,
                       body: body),
                 ));
           },
