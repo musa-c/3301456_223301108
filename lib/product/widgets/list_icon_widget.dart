@@ -48,8 +48,8 @@ class ListIconWidgetState extends State<ListIconWidget>
       */
         );
 
-    _animation = Tween<double>(begin: 1, end: 1.5).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.ease),
+    _animation = Tween<double>(begin: 1, end: 1.2).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.bounceIn),
       /* 
        Bu, animasyonun boyutunu değiştirmek için kullanılan bir faktördür.
       */
