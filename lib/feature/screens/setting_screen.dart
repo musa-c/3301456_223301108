@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:abc/feature/screens/account_activities_screen.dart';
+import 'package:abc/feature/screens/account_settings_screen.dart';
 import 'package:abc/product/models/post_model.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.cyan,
                 ),
                 "Hesap Ayarları",
-                context),
+                context,
+                AccountSettingsView(myuser: myuser)),
             Divider(
               color: Colors.grey,
             ),
@@ -30,17 +32,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.deepOrange,
                 ),
                 "Hesap Hareketleri",
-                context),
-            Divider(
-              color: Colors.grey,
-            ),
-            _card(
-                Icon(
-                  Icons.lock,
-                  color: Colors.deepOrangeAccent,
-                ),
-                "Gizlilik",
-                context),
+                context,
+                AccountActivities(myuser: myuser)),
             Divider(
               color: Colors.grey,
             ),
@@ -50,7 +43,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.deepPurple,
                 ),
                 "Beğeniler",
-                context),
+                context,
+                null),
             Divider(
               color: Colors.grey,
             ),
@@ -60,7 +54,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.deepOrange,
                 ),
                 "Beğenilmeyenler",
-                context),
+                context,
+                null),
             Divider(
               color: Colors.grey,
             ),
@@ -70,7 +65,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.green,
                 ),
                 "Kaydedilen Gönderiler",
-                context),
+                context,
+                null),
             Divider(
               color: Colors.grey,
             ),
@@ -80,7 +76,8 @@ class SettingView extends StatelessWidget {
                   color: Colors.amber[700],
                 ),
                 "Kaydedilen Gönderiler",
-                context),
+                context,
+                null),
             Divider(
               color: Colors.grey,
             ),
@@ -88,7 +85,8 @@ class SettingView extends StatelessWidget {
         ));
   }
 
-  Widget _card(Widget icon, String text, BuildContext context) => Card(
+  Widget _card(Widget icon, String text, BuildContext context, var body) =>
+      Card(
         color: Colors.black,
         child: ListTile(
           onTap: () {
@@ -103,7 +101,7 @@ class SettingView extends StatelessWidget {
                         backgroundColor: Colors.black,
                         title: Text(text),
                       ),
-                      body: AccountActivities(myuser: myuser)),
+                      body: body),
                 ));
           },
           textColor: Colors.white,
