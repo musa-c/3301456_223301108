@@ -35,17 +35,18 @@ class _LogInViewState extends State<LogInView> {
   void getUser() async {
     LocalDbUserModel? user = await userLocalDb.getUser();
     setState(() {
-      if (isEmailAuth) {
-        userOrEmail = user?.email ?? "";
-        _textEditingControllerUserName.text = user?.email ?? "";
-      } else {
-        userOrEmail = user?.username ?? "";
-        _textEditingControllerUserName.text = user?.username ?? "";
+      if (user != null) {
+        if (isEmailAuth) {
+          userOrEmail = user.email ?? "";
+          _textEditingControllerUserName.text = user.email ?? "";
+        } else {
+          userOrEmail = user.username ?? "";
+          _textEditingControllerUserName.text = user.username ?? "";
+        }
+        pass = user.password ?? "";
+        _textEditingControllerPassword.text = user.password ?? "";
       }
-      pass = user?.password ?? "";
     });
-
-    _textEditingControllerPassword.text = user?.password ?? "";
   }
 
   @override
@@ -91,7 +92,11 @@ class _LogInViewState extends State<LogInView> {
       if (response.statusCode == 200) {
         setState(() {
           isLoading = false;
+          userOrEmail = "";
+          pass = "";
         });
+        _textEditingControllerUserName.clear();
+        _textEditingControllerPassword.clear();
         // ignore: use_build_context_synchronously
         Navigator.push(
             context,

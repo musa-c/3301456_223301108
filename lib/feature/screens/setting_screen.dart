@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class SettingView extends StatelessWidget {
   User? myuser;
-  SettingView({super.key, this.myuser});
+  void Function(int id)? callbackGetUserById;
+  SettingView({super.key, this.myuser, this.callbackGetUserById});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,8 @@ class SettingView extends StatelessWidget {
                 ),
                 "Hesap Ayarları",
                 context,
-                AccountSettingsView(myuser: myuser)),
+                AccountSettingsView(
+                    myuser: myuser, callbackGetUserById: callbackGetUserById)),
             Divider(
               color: Colors.grey,
             ),
@@ -77,6 +79,18 @@ class SettingView extends StatelessWidget {
                 ),
                 "Kaydedilen Gönderiler",
                 context,
+                null),
+            Divider(
+              color: Colors.grey,
+            ),
+            _card(
+                Icon(
+                  Icons.power_settings_new,
+                  color: Colors.amber[700],
+                ),
+                "Çıkış",
+                context,
+                // LogInView()
                 null),
             Divider(
               color: Colors.grey,

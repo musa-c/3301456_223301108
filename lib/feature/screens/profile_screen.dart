@@ -73,7 +73,9 @@ class _ProfileViewState extends State<ProfileView> {
                             backgroundColor: Colors.black,
                             title: Text("Ayarlar"),
                           ),
-                          body: SettingView(myuser: widget.myuser)),
+                          body: SettingView(
+                              myuser: widget.myuser,
+                              callbackGetUserById: GetUserById)),
                     ));
               },
               child: Icon(

@@ -44,7 +44,7 @@ class UserLocalDb implements IUserLocalDb {
 
   Future<int> getUserId() async {
     Database db = await initializeDb();
-    int id = (await db.rawQuery('SELECT id FROM User')) as int;
+    int id = (await db.rawQuery('SELECT id FROM User'))[0]['id'] as int;
 
     return id;
   }
@@ -53,6 +53,7 @@ class UserLocalDb implements IUserLocalDb {
   Future<int> updateUser(LocalDbUserModel user) async {
     Database db = await initializeDb();
     int id = await getUserId();
+    print("LOCAL USER ID: $id");
     return await db
         .update("User", user.toMap(), where: "id = ?", whereArgs: [id]);
   }
