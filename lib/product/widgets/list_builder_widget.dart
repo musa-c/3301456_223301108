@@ -9,6 +9,7 @@ import 'package:abc/product/models/post_model.dart';
 import 'package:abc/product/widgets/list_card_bookmarkusers_widget.dart';
 import 'package:abc/product/widgets/list_card_dislikeusers_widget.dart';
 import 'package:abc/product/widgets/list_card_likeusers_widget.dart';
+import 'package:abc/product/widgets/list_commentusers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -26,6 +27,7 @@ class ListBuilderWidget extends StatefulWidget {
 
 class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   List<Post>? posts = [];
+  bool isLoading = false;
 
   bool isUserIdLike(List<Likes>? likesList) {
     if (likesList == null) return false;
@@ -49,7 +51,14 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     try {
       response = await likeController.createLike(userId, postId);
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getPost();
+        PostController postController = PostController();
+        Post updatePost = await postController.getPostById(postId);
+        int index = posts!
+            .indexOf(posts!.firstWhere((element) => element.id == postId));
+
+        setState(() {
+          posts![index] = updatePost;
+        });
       } else {
         print(response.statusCode);
         print(response.body);
@@ -68,7 +77,14 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       response = await dislikesController.createDislike(userId, postId);
 
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getPost();
+        PostController postController = PostController();
+        Post updatePost = await postController.getPostById(postId);
+        int index = posts!
+            .indexOf(posts!.firstWhere((element) => element.id == postId));
+
+        setState(() {
+          posts![index] = updatePost;
+        });
       } else {
         print("hata");
       }
@@ -84,7 +100,16 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
     try {
       response = await bookMarkController.createBookMark(userId, postId);
       if (response.statusCode == 200 || response.statusCode == 204) {
-        getPost();
+        PostController postController = PostController();
+        Post updatePost = await postController.getPostById(postId);
+        int index = posts!
+            .indexOf(posts!.firstWhere((element) => element.id == postId));
+
+        setState(() {
+          posts![index] = updatePost;
+        });
+
+        // getPost();
       } else {
         print("hata");
       }
@@ -94,6 +119,9 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
   }
 
   void getPost() async {
+    setState(() {
+      isLoading = true;
+    });
     PostController postController = PostController();
     try {
       List<Post> postList = await postController.getAll();
@@ -101,31 +129,47 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
         setState(() {
           posts = postList;
         });
-      } else {
-        return;
       }
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
-      print("hata:  $e");
+      print("hataxxx:  $e");
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getPost();
+    if (mounted) {
+      getPost();
+    }
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   getPost();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: posts!.length,
-        itemBuilder: (BuildContext context, int index) {
-          Post post = posts![index];
-          DateTime dateTime = DateTime.parse(post.timeStamp!);
-          String formattedDateTime =
-              DateFormat('dd.MM.yyyy HH:mm').format(dateTime);
-          return _listCont(post, formattedDateTime);
-        });
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : ListView.builder(
+            itemCount: posts!.length,
+            itemBuilder: (BuildContext context, int index) {
+              Post post = posts![index];
+              DateTime dateTime = DateTime.parse(post.timeStamp!);
+              String formattedDateTime =
+                  DateFormat('dd.MM.yyyy HH:mm').format(dateTime);
+              return _listCont(post, formattedDateTime);
+            });
   }
 
   Widget _listCont(Post post, String formattedDateTime) => Container(
@@ -170,7 +214,6 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                     title: Text("Profil"),
                   ),
                   body: ProfileView(
-                    callbackGetPost: getPost,
                     user: user,
                     myuser: widget.user,
                   )),
@@ -178,7 +221,7 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
       },
       child: CircleAvatar(
         radius: 24,
-        backgroundImage: AssetImage("assets/avatars/${user.avatar!}.jpg"),
+        backgroundImage: AssetImage("assets/avatars/${user.avatar}.jpg"),
       ));
 
   Widget _listCartUserName(String username) => Text(
@@ -227,7 +270,15 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                 ListIconWidget(
                     icon: Icons.messenger_outline_rounded,
                     count: post.commentCount,
-                    onTap: () {}),
+                    onTap: () {
+                      Modal(
+                          post.id!,
+                          "Yorumlar",
+                          ListCommentUserWidget(
+                            postId: post.id!,
+                            myuser: widget.user,
+                          ));
+                    }),
                 ListIconWidget(
                   icon: Icons.arrow_upward_rounded,
                   count: post.likeCount,
@@ -238,15 +289,13 @@ class _ListBuilderWidgetState extends State<ListBuilderWidget> {
                     setLike(post.id!);
                   },
                   onTapUser: () {
-                    post.likeCount != 0
-                        ? Modal(
-                            post.id!,
-                            "Beğenenler",
-                            ListCardLikeUsers(
-                              postId: post.id!,
-                              myuser: widget.user,
-                            ))
-                        : null;
+                    Modal(
+                        post.id!,
+                        "Beğenenler",
+                        ListCardLikeUsers(
+                          postId: post.id!,
+                          myuser: widget.user,
+                        ));
                   },
                 ),
                 ListIconWidget(

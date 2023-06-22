@@ -60,4 +60,18 @@ class PostController implements IPostController {
             body: jsonEncode(updateText));
     return response;
   }
+
+  @override
+  Future<Post> getPostById(int postId) async {
+    final response =
+        await http.get(Uri.parse('${ApiUrlConstants.getPostByIdUrl}/$postId'));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      Post post = Post.fromJson(jsonResponse);
+      return post;
+    } else {
+      throw Exception("a");
+    }
+  }
 }

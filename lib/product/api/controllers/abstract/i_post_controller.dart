@@ -8,4 +8,5 @@ abstract class IPostController {
   Future<List<Post>> getPostByUserId(int userId);
   Future<Response> deletePost(int postId);
   Future<Response> updatePost(int postId, String updateText);
+  Future<Post> getPostById(int postId);
 }

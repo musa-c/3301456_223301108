@@ -20,6 +20,7 @@ class ApiUrlConstants {
   static const String updateUserNameUrl = "$getAllUserUrl/UpdateUserName";
 
   static const String getAllPostUrl = "${remoteUrl}api/posts";
+  static const String getPostByIdUrl = "$getAllPostUrl/GetPostById";
   static const String createPostUrl = "$getAllPostUrl/CreatePost";
   static const String getPostByUserIdUrl = "$getAllPostUrl/GetPostByUserId";
   static const String updatePostUrl = "$getAllPostUrl/updatePost";
