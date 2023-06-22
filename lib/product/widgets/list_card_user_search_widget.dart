@@ -20,9 +20,11 @@ class _ListCardUserSearchState extends State<ListCardUserSearch> {
     UserController userContoroller = UserController();
     try {
       List<User> usersList = await userContoroller.getAll();
-      setState(() {
-        users = usersList;
-      });
+      if (mounted) {
+        setState(() {
+          users = usersList;
+        });
+      }
     } catch (e) {
       print('Hata: $e');
     }
